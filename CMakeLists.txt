@@ -14,15 +14,21 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
 set(PROJECT_SOURCES
         main.cpp
-        window.cpp
-        window.h
-        window.ui
+        ui/window.cpp
+        ui/window.h
+        ui/window.ui
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(FileBasket
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
+        model/AppModel.h model/AppModel.cpp
+        model/FileListModel.h model/FileListModel.cpp
+        services/FileOperationService.h services/FileOperationService.cpp
+        services/PersistenceService.h services/PersistenceService.cpp
+        controller/FileBasketController.h controller/FileBasketController.cpp
+        ui/FileListView.h ui/FileListView.cpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET FileBasket APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
