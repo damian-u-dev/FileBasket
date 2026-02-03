@@ -1,3 +1,7 @@
 #include "FileListView.h"
 
-FileListView::FileListView() {}
+FileListView::FileListView(QWidget* parent)
+    : QListView(parent)
+{
+    setAcceptDrops(true);
+}
