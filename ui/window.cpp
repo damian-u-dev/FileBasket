@@ -1,11 +1,30 @@
 #include "window.h"
 #include "./ui_window.h"
 
+#include <QVector>
+#include <QString>
+#include <QStringList>
+
 Window::Window(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::Window)
 {
     ui->setupUi(this);
+}
+
+void Window::onAddClicked()
+{
+
+}
+
+void Window::onCopyClicked()
+{
+
+}
+
+void Window::onMoveClicked()
+{
+
 }
 
 Window::~Window()

@@ -17,6 +17,17 @@ public:
     Window(QWidget *parent = nullptr);
     ~Window();
 
+signals:
+    void requestAddFiles(const QStringList& paths);
+    void requestCopy(const QString& targetDir, const QVector<int>& selectedIndices);
+    void requestMove(const QString& targetDir, const QVector<int>& selectedIndices);
+    void requestTabChanged(int index);
+
+private slots:
+    void onAddClicked();
+    void onCopyClicked();
+    void onMoveClicked();
+
 private:
     Ui::Window *ui;
 };
