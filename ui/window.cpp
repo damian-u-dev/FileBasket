@@ -10,6 +10,10 @@ Window::Window(QWidget *parent)
     , ui(new Ui::Window)
 {
     ui->setupUi(this);
+
+    connect(ui->buttonAdd, &QPushButton::clicked, this, &Window::onAddClicked);
+    connect(ui->buttonCopy, &QPushButton::clicked, this, &Window::onCopyClicked);
+    connect(ui->buttonMove, &QPushButton::clicked, this, &Window::onMoveClicked);
 }
 
 void Window::onAddClicked()
