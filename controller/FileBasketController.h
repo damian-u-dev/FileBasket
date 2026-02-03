@@ -1,10 +1,16 @@
 #ifndef FILEBASKETCONTROLLER_H
 #define FILEBASKETCONTROLLER_H
 
-class FileBasketController
+#include <QObject>
+
+class AppModel;
+
+class FileBasketController : public QObject
 {
+private:
+    AppModel& model;
 public:
-    FileBasketController();
+    FileBasketController(AppModel& model, QObject* parent = nullptr);
 };
 
 #endif // FILEBASKETCONTROLLER_H

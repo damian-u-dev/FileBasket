@@ -27,8 +27,9 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         model/FileListModel.h model/FileListModel.cpp
         services/FileOperationService.h services/FileOperationService.cpp
         services/PersistenceService.h services/PersistenceService.cpp
-        controller/FileBasketController.h controller/FileBasketController.cpp
+
         ui/FileListView.h ui/FileListView.cpp
+        controller/FileBasketController.h controller/FileBasketController.cpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET FileBasket APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

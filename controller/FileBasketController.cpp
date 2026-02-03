@@ -1,3 +1,6 @@
 #include "FileBasketController.h"
 
-FileBasketController::FileBasketController() {}
+FileBasketController::FileBasketController(AppModel& model, QObject* parent)
+    : QObject(parent),
+    model(model)
+{ }
