@@ -1,10 +1,56 @@
 #include "ui/window.h"
 
 #include <QApplication>
+#include <QMutex>
+#include <QFile>
+#include <QDateTime>
+
+QFile logFile;
+QMutex logMutex;
+
+void logMessageHandler(QtMsgType type, const QMessageLogContext& context, const QString& msg)
+{
+    QMutexLocker locker(&logMutex);
+    if(!logFile.isOpen())
+        return;
+
+    QTextStream out(&logFile);
+
+    QString level;
+    switch(type)
+    {
+        case QtDebugMsg:    level = "DEBUG";    break;
+        case QtInfoMsg:     level = "INFO";     break;
+        case QtWarningMsg:  level = "WARNING";  break;
+        case QtCriticalMsg: level = "CRITICAL"; break;
+        case QtFatalMsg:    level = "FATAL";    break;
+    }
+
+    QString currentTime = QDateTime::currentDateTime().toString("dd.MM.yyyy hh:mm:ss");
+    if(type == QtDebugMsg || type == QtInfoMsg || type == QtWarningMsg)
+    {
+        out << currentTime << " [" << level <<"] " << msg << "\n";
+    }
+    else
+    {
+        out << currentTime << " [" << level <<"] " << msg
+        << " | " << context.file << " -> " << context.function <<"\n";
+    }
+}
+
+void initializeLogFile()
+{
+    logFile.setFileName("FileBasket.log");
+    logFile.open(QIODevice::Append | QIODevice::Text);
+    qInstallMessageHandler(logMessageHandler);
+    qInfo() <<"---Log file is initialized---";
+}
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    initializeLogFile();
+
     Window w;
     w.show();
     return a.exec();

@@ -10,5 +10,6 @@ Window::Window(QWidget *parent)
 
 Window::~Window()
 {
+    qInfo() <<"---Shutting down...---\n\n";
     delete ui;
 }
