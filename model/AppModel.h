@@ -26,6 +26,7 @@ public:
     Tab& activeTab();
     qsizetype getSizeTabs() const;
     void setCurrentTab(int index);
+    void addFilesToActiveTab(const QStringList& paths);
 };
 
 #endif // APPMODEL_H

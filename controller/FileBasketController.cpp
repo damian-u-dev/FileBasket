@@ -10,7 +10,7 @@ FileBasketController::FileBasketController(AppModel& model, QObject* parent)
 
 void FileBasketController::addFiles(const QStringList& paths)
 {
-
+    model.addFilesToActiveTab(paths);
 }
 
 void FileBasketController::copyTo(const QString& targetDir, const QVector<int>& selectedIndices)
