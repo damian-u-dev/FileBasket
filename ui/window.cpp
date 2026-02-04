@@ -1,13 +1,16 @@
 #include "window.h"
 #include "./ui_window.h"
+#include "../model/AppModel.h"
 
 #include <QVector>
 #include <QString>
 #include <QStringList>
+#include <QFileDialog>
 
-Window::Window(QWidget *parent)
+Window::Window(AppModel& model, QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::Window)
+    , model(model)
 {
     ui->setupUi(this);
 
@@ -18,17 +21,29 @@ Window::Window(QWidget *parent)
 
 void Window::onAddClicked()
 {
-
+    QStringList files = QFileDialog::getOpenFileNames(this, "Add files");
+    if(!files.empty())
+        emit requestAddFiles(files);
 }
 
 void Window::onCopyClicked()
 {
+    QString dir = QFileDialog::getExistingDirectory(this, "Copy to");
+    if(dir.isEmpty())
+        return;
 
+    QVector<int> selected; //TODO: Get indices of selected files;
+    emit requestCopy(dir, selected);
 }
 
 void Window::onMoveClicked()
 {
+    QString dir = QFileDialog::getExistingDirectory(this, "Move to");
+    if(dir.isEmpty())
+        return;
 
+    QVector<int> selected; //TODO: Get indices of selected files;
+    emit requestMove(dir, selected);
 }
 
 Window::~Window()
