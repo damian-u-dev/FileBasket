@@ -24,6 +24,8 @@ private:
 public:
     AppModel();
     Tab& activeTab();
+    qsizetype getSizeTabs() const;
+    void setCurrentTab(int index);
 };
 
 #endif // APPMODEL_H
