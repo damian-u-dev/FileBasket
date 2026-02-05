@@ -72,3 +72,9 @@ void FileListModel::addFiles(const QStringList& paths)
         endInsertRows();
     }
 }
+
+void FileListModel::onFilesAdded(int startIndex, int count)
+{
+    beginInsertRows(QModelIndex(), startIndex, startIndex + count - 1);
+    endInsertRows();
+}

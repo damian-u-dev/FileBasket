@@ -33,9 +33,13 @@ void AppModel::addFilesToActiveTab(const QStringList& paths)
 
     Tab& tab = activeTab();
 
+    int startIndex = tab.files.size();
+
     QSet<QString> existingPaths;
     for(const FileItem& item : std::as_const(tab.files))
         existingPaths.insert(item.path);
+
+    int addedCount = 0;
 
     for(const QString& rawPath : paths)
     {
@@ -53,5 +57,10 @@ void AppModel::addFilesToActiveTab(const QStringList& paths)
 
         tab.files.push_back(item);
         existingPaths.insert(normalizedPath);
+        addedCount++;
+    }
+    if(addedCount > 0)
+    {
+        emit filesAdded(startIndex, addedCount);
     }
 }

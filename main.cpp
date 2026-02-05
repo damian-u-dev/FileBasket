@@ -1,6 +1,7 @@
 #include "ui/window.h"
 #include "model/AppModel.h"
 #include "controller/FileBasketController.h"
+#include "model/FileListModel.h"
 
 #include <QApplication>
 #include <QMutex>

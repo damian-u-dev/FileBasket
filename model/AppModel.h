@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QVector>
+#include <QObject>
 
 struct FileItem
 {
@@ -16,9 +17,10 @@ struct Tab
     QVector<FileItem> files;
 };
 
-class AppModel
+class AppModel : public QObject
 {
 private:
+    Q_OBJECT
     QVector<Tab> tabs;
     int currentTab = 0;
 public:
@@ -27,6 +29,9 @@ public:
     qsizetype getSizeTabs() const;
     void setCurrentTab(int index);
     void addFilesToActiveTab(const QStringList& paths);
+
+signals:
+    void filesAdded(int startIndex, int count);
 };
 
 #endif // APPMODEL_H

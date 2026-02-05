@@ -18,6 +18,9 @@ public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     QVariant data(const QModelIndex &index, int role) const override;
     void addFiles(const QStringList& paths);
+
+public slots:
+    void onFilesAdded(int startIndex, int count);
 };
 
 #endif // FILELISTMODEL_H

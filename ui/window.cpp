@@ -24,6 +24,8 @@ Window::Window(AppModel& model, QWidget *parent)
     ui->listView->setDragDropMode(QAbstractItemView::DropOnly);
     ui->listView->setDefaultDropAction(Qt::CopyAction);
 
+    QObject::connect(&model, &AppModel::filesAdded, fileListModel, &FileListModel::onFilesAdded);
+
     connect(ui->buttonAdd, &QPushButton::clicked, this, &Window::onAddClicked);
     connect(ui->buttonCopy, &QPushButton::clicked, this, &Window::onCopyClicked);
     connect(ui->buttonMove, &QPushButton::clicked, this, &Window::onMoveClicked);
