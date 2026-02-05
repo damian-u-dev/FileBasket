@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>376</width>
-    <height>169</height>
+    <width>446</width>
+    <height>395</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -27,7 +27,7 @@
      <string>Add</string>
     </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>160</x>
@@ -53,13 +53,23 @@
      </item>
     </layout>
    </widget>
+   <widget class="QListView" name="listView">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>90</y>
+      <width>351</width>
+      <height>261</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>376</width>
+     <width>446</width>
      <height>24</height>
     </rect>
    </property>

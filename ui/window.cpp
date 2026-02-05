@@ -1,11 +1,13 @@
 #include "window.h"
 #include "./ui_window.h"
 #include "../model/AppModel.h"
+#include "../model/FileListModel.h"
 
 #include <QVector>
 #include <QString>
 #include <QStringList>
 #include <QFileDialog>
+#include <QAbstractItemView>
 
 Window::Window(AppModel& model, QWidget *parent)
     : QMainWindow(parent)
@@ -13,6 +15,14 @@ Window::Window(AppModel& model, QWidget *parent)
     , model(model)
 {
     ui->setupUi(this);
+
+    FileListModel* fileListModel = new FileListModel(model, this);
+    ui->listView->setModel(fileListModel);
+    ui->listView->setSelectionMode(QAbstractItemView::ExtendedSelection);
+
+    ui->listView->setAcceptDrops(true);
+    ui->listView->setDragDropMode(QAbstractItemView::DropOnly);
+    ui->listView->setDefaultDropAction(Qt::CopyAction);
 
     connect(ui->buttonAdd, &QPushButton::clicked, this, &Window::onAddClicked);
     connect(ui->buttonCopy, &QPushButton::clicked, this, &Window::onCopyClicked);
