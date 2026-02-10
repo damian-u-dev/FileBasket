@@ -4,6 +4,7 @@
 #include <QMainWindow>
 
 class AppModel;
+class FileBasketController;
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -16,8 +17,10 @@ class Window : public QMainWindow
 private:
     Q_OBJECT
     AppModel& model;
+    FileBasketController& controller;
+
 public:
-    Window(AppModel& model, QWidget *parent = nullptr);
+    Window(AppModel& model, FileBasketController& ctrl, QWidget *parent = nullptr);
     ~Window();
 
 signals:

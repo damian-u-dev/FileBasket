@@ -1,4 +1,5 @@
 #include "FileListView.h"
+#include "../controller/FileBasketController.h"
 
 #include <QContextMenuEvent>
 #include <QMenu>
@@ -8,6 +9,11 @@ FileListView::FileListView(QWidget* parent)
 {
     setAcceptDrops(true);
     setContextMenuPolicy(Qt::DefaultContextMenu);
+}
+
+void FileListView::setController(FileBasketController* ctrl)
+{
+    controller = ctrl;
 }
 
 void FileListView::contextMenuEvent(QContextMenuEvent* event)
@@ -33,7 +39,7 @@ void FileListView::contextMenuEvent(QContextMenuEvent* event)
 
     if(chosen == removeAction)
     {
-        //TODO: Call the controller
+        controller->removeItems(rows);
     }
     else if(chosen == moveAction)
     {

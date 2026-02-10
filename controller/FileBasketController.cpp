@@ -14,6 +14,11 @@ void FileBasketController::addFiles(const QStringList& paths)
     model.addFilesToActiveTab(paths);
 }
 
+void FileBasketController::removeItems(const QVector<int>& indices)
+{
+
+}
+
 void FileBasketController::copyTo(const QString& targetDir, const QVector<int>& selectedIndices)
 {
     if(selectedIndices.isEmpty())

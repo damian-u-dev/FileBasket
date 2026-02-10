@@ -11,6 +11,7 @@ private:
     AppModel& model;
 public:
     FileBasketController(AppModel& model, QObject* parent = nullptr);
+    void removeItems(const QVector<int>& indices);
 
 public slots:
     void addFiles(const QStringList& paths);

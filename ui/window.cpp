@@ -2,6 +2,7 @@
 #include "./ui_window.h"
 #include "../model/AppModel.h"
 #include "../model/FileListModel.h"
+#include "../controller/FileBasketController.h"
 
 #include <QVector>
 #include <QString>
@@ -9,15 +10,17 @@
 #include <QFileDialog>
 #include <QAbstractItemView>
 
-Window::Window(AppModel& model, QWidget *parent)
+Window::Window(AppModel& model, FileBasketController& ctrl, QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::Window)
     , model(model)
+    , controller(ctrl)
 {
     ui->setupUi(this);
 
     FileListModel* fileListModel = new FileListModel(model, this);
     ui->listView->setModel(fileListModel);
+    ui->listView->setController(&controller);
     ui->listView->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
     ui->listView->setAcceptDrops(true);

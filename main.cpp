@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
 
     AppModel model;
     FileBasketController controller(model);
-    Window w(model);
+    Window w(model, controller);
 
     QObject::connect(&w, &Window::requestAddFiles, &controller, &FileBasketController::addFiles);
     QObject::connect(&w, &Window::requestCopy, &controller, &FileBasketController::copyTo);
