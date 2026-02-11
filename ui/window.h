@@ -23,6 +23,11 @@ public:
     Window(AppModel& model, FileBasketController& ctrl, QWidget *parent = nullptr);
     ~Window();
 
+private:
+    void setupUi();
+    void setupListView();
+    void setupConnections();
+
 signals:
     void requestAddFiles(const QStringList& paths);
     void requestCopy(const QString& targetDir, const QVector<int>& selectedIndices);

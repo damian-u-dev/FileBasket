@@ -17,22 +17,8 @@ Window::Window(AppModel& model, FileBasketController& ctrl, QWidget *parent)
     , controller(ctrl)
 {
     ui->setupUi(this);
-
-    FileListModel* fileListModel = new FileListModel(model, this);
-    ui->listView->setModel(fileListModel);
-    ui->listView->setController(&controller);
-    ui->listView->setSelectionMode(QAbstractItemView::ExtendedSelection);
-
-    ui->listView->setAcceptDrops(true);
-    ui->listView->setDragDropMode(QAbstractItemView::DropOnly);
-    ui->listView->setDefaultDropAction(Qt::CopyAction);
-
-    QObject::connect(&model, &AppModel::filesAdded, fileListModel, &FileListModel::onFilesAdded);
-    QObject::connect(&model, &AppModel::filesRemoved, fileListModel, &FileListModel::onFilesRemoved);
-
-    connect(ui->buttonAdd, &QPushButton::clicked, this, &Window::onAddClicked);
-    connect(ui->buttonCopy, &QPushButton::clicked, this, &Window::onCopyClicked);
-    connect(ui->buttonMove, &QPushButton::clicked, this, &Window::onMoveClicked);
+    setupUi();
+    setupConnections();
 }
 
 void Window::onAddClicked()
@@ -66,4 +52,31 @@ Window::~Window()
 {
     qInfo() <<"---Shutting down...---\n\n";
     delete ui;
+}
+
+void Window::setupUi()
+{
+    setupListView();
+}
+
+void Window::setupListView()
+{
+    FileListModel* fileListModel = new FileListModel(model, this);
+    ui->listView->setModel(fileListModel);
+    ui->listView->setController(&controller);
+    ui->listView->setSelectionMode(QAbstractItemView::ExtendedSelection);
+
+    ui->listView->setAcceptDrops(true);
+    ui->listView->setDragDropMode(QAbstractItemView::DropOnly);
+    ui->listView->setDefaultDropAction(Qt::CopyAction);
+
+    QObject::connect(&model, &AppModel::filesAdded, fileListModel, &FileListModel::onFilesAdded);
+    QObject::connect(&model, &AppModel::filesRemoved, fileListModel, &FileListModel::onFilesRemoved);
+}
+
+void Window::setupConnections()
+{
+    connect(ui->buttonAdd, &QPushButton::clicked, this, &Window::onAddClicked);
+    connect(ui->buttonCopy, &QPushButton::clicked, this, &Window::onCopyClicked);
+    connect(ui->buttonMove, &QPushButton::clicked, this, &Window::onMoveClicked);
 }
