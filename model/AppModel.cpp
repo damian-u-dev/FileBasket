@@ -64,3 +64,23 @@ void AppModel::addFilesToActiveTab(const QStringList& paths)
         emit filesAdded(startIndex, addedCount);
     }
 }
+
+void AppModel::removeFilesFromActiveTab(const QVector<int>& rows)
+{
+    if(rows.isEmpty())
+        return;
+
+    auto& files = activeTab().files;
+
+    //Start from the end because
+    //The array elements will be
+    //Shifted by -1 after removing
+    QVector<int> sorted = rows;
+    std::sort(sorted.begin(), sorted.end(), std::greater<>());
+
+    for(int row : sorted)
+        if(row >= 0 && row < files.size())
+            files.removeAt(row);
+
+    emit filesRemoved(rows);
+}

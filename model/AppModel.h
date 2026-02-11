@@ -29,9 +29,11 @@ public:
     qsizetype getSizeTabs() const;
     void setCurrentTab(int index);
     void addFilesToActiveTab(const QStringList& paths);
+    void removeFilesFromActiveTab(const QVector<int>& rows);
 
 signals:
     void filesAdded(int startIndex, int count);
+    void filesRemoved(const QVector<int>& rows);
 };
 
 #endif // APPMODEL_H

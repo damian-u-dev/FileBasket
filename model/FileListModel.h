@@ -1,9 +1,11 @@
 #ifndef FILELISTMODEL_H
 #define FILELISTMODEL_H
 
+#include "../model/AppModel.h"
+
 #include <QAbstractListModel>
 #include <QStringList>
-#include "../model/AppModel.h"
+#include <QVector>
 
 
 class FileListModel : public QAbstractListModel
@@ -21,6 +23,7 @@ public:
 
 public slots:
     void onFilesAdded(int startIndex, int count);
+    void onFilesRemoved(const QVector<int>& rows);
 };
 
 #endif // FILELISTMODEL_H

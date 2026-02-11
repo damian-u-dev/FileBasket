@@ -28,6 +28,7 @@ Window::Window(AppModel& model, FileBasketController& ctrl, QWidget *parent)
     ui->listView->setDefaultDropAction(Qt::CopyAction);
 
     QObject::connect(&model, &AppModel::filesAdded, fileListModel, &FileListModel::onFilesAdded);
+    QObject::connect(&model, &AppModel::filesRemoved, fileListModel, &FileListModel::onFilesRemoved);
 
     connect(ui->buttonAdd, &QPushButton::clicked, this, &Window::onAddClicked);
     connect(ui->buttonCopy, &QPushButton::clicked, this, &Window::onCopyClicked);

@@ -78,3 +78,18 @@ void FileListModel::onFilesAdded(int startIndex, int count)
     beginInsertRows(QModelIndex(), startIndex, startIndex + count - 1);
     endInsertRows();
 }
+
+void FileListModel::onFilesRemoved(const QVector<int>& rows)
+{
+    if(rows.isEmpty())
+        return;
+
+    QVector<int> sorted;
+    std::sort(sorted.begin(), sorted.end(), std::greater<>());
+
+    for(int row : sorted)
+    {
+        beginRemoveRows(QModelIndex(), row, row);
+        endRemoveRows();
+    }
+}
