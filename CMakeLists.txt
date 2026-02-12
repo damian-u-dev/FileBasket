@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
+enable_testing()
 
 project(FileBasket VERSION 0.1 LANGUAGES CXX)
 
@@ -80,3 +81,4 @@ install(TARGETS FileBasket
 if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(FileBasket)
 endif()
+add_subdirectory(Tests)
