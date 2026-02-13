@@ -56,6 +56,15 @@ int main(int argc, char *argv[])
 
     AppModel model;
     FileBasketController controller(model);
+
+    QFile file(":/UI/style.qss");
+    if(file.open(QFile::ReadOnly | QFile::Text))
+    {
+        QTextStream stream(&file);
+        QString styleSheet = stream.readAll();
+        a.setStyleSheet(styleSheet);
+    }
+
     Window w(model, controller);
 
     QObject::connect(&w, &Window::requestAddFiles, &controller, &FileBasketController::addFiles);

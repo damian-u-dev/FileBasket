@@ -9,6 +9,8 @@
 #include <QStringList>
 #include <QFileDialog>
 #include <QAbstractItemView>
+#include <QGraphicsDropShadowEffect>
+#include <QPropertyAnimation>
 
 Window::Window(AppModel& model, FileBasketController& ctrl, QWidget *parent)
     : QMainWindow(parent)
@@ -18,6 +20,8 @@ Window::Window(AppModel& model, FileBasketController& ctrl, QWidget *parent)
 {
     ui->setupUi(this);
     setupUi();
+    setupAnimations();
+    setupEffects();
     setupConnections();
 }
 
@@ -70,6 +74,9 @@ void Window::setupListView()
     ui->listView->setDragDropMode(QAbstractItemView::DropOnly);
     ui->listView->setDefaultDropAction(Qt::CopyAction);
 
+    ui->listView->setIconSize(QSize(25, 25));
+    ui->listView->setUniformItemSizes(true);
+
     QObject::connect(&model, &AppModel::filesAdded, fileListModel, &FileListModel::onFilesAdded);
     QObject::connect(&model, &AppModel::filesRemoved, fileListModel, &FileListModel::onFilesRemoved);
 }
@@ -79,4 +86,24 @@ void Window::setupConnections()
     connect(ui->buttonAdd, &QPushButton::clicked, this, &Window::onAddClicked);
     connect(ui->buttonCopy, &QPushButton::clicked, this, &Window::onCopyClicked);
     connect(ui->buttonMove, &QPushButton::clicked, this, &Window::onMoveClicked);
+}
+
+void Window::setupAnimations()
+{
+    QPropertyAnimation* animation = new QPropertyAnimation(this, "windowOpacity");
+    animation->setDuration(300);
+    animation->setStartValue(0.0);
+    animation->setEndValue(1.0);
+    animation->start();
+}
+
+void Window::setupEffects()
+{
+    this->setAttribute(Qt::WA_TranslucentBackground);
+
+    QGraphicsDropShadowEffect* shadow = new QGraphicsDropShadowEffect(this);
+    shadow->setBlurRadius(30);
+    shadow->setOffset(0, 8);
+    shadow->setColor(QColor(0, 0, 0, 150));
+    ui->centralwidget->setGraphicsEffect(shadow);
 }

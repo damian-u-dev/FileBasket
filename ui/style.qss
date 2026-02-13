@@ -1,0 +1,54 @@
+/* === ГЛАВНОЕ ОКНО === */
+QWidget {
+    background-color: #202020;
+    color: #f0f0f0;
+    font-family: "Segoe UI Variable", "Segoe UI";
+    font-size: 14px;
+}
+
+QMainWindow {
+    background: transparent;
+}
+
+#centralwidget {
+    background-color: #202020;
+}
+
+/* === КНОПКИ === */
+QPushButton {
+    background-color: #2d2d2d;
+    border: 1px solid #3a3a3a;
+    border-radius: 10px;
+    padding: 8px 16px;
+}
+
+QPushButton:hover {
+    background-color: #3a3a3a;
+}
+
+QPushButton:pressed {
+    background-color: #252525;
+}
+
+#buttonAdd {
+    background-color: #3daee9;
+    border: none;
+    color: white;
+}
+
+#buttonAdd:hover {
+    background-color: #5bbdf5;
+}
+
+/* === СПИСОК ФАЙЛОВ === */
+QListView {
+    background-color: #252525;
+    border: none;
+    border-radius: 12px;
+    padding: 6px;
+}
+
+QListView::item:selected {
+    background-color: #3a3a3a;
+    border-radius: 6px;
+}

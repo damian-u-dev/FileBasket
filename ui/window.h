@@ -27,6 +27,8 @@ private:
     void setupUi();
     void setupListView();
     void setupConnections();
+    void setupAnimations();
+    void setupEffects();
 
 signals:
     void requestAddFiles(const QStringList& paths);

@@ -21,7 +21,11 @@
        <number>20</number>
       </property>
       <item row="1" column="0" colspan="3">
-       <widget class="FileListView" name="listView"/>
+       <widget class="FileListView" name="listView">
+        <property name="spacing">
+         <number>3</number>
+        </property>
+       </widget>
       </item>
       <item row="0" column="0">
        <widget class="QPushButton" name="buttonAdd">
