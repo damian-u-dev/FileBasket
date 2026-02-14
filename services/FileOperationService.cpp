@@ -6,6 +6,7 @@
 #include <string>
 #include <QDebug>
 #include <QStringLiteral>
+#include <QDir>
 
 #include "FileOperationService.h"
 
@@ -15,7 +16,8 @@ static std::wstring buildDoubleNullString(const QStringList& paths)
 
     for(const QString& path : paths)
     {
-        std::wstring w = path.toStdWString();
+        QString native = QDir::toNativeSeparators(path);
+        std::wstring w = native.toStdWString();
         result.append(w);
         result.push_back(L'\0');
     }
@@ -36,8 +38,8 @@ bool FileOperationService::runExplorerOperation(
     //NOTE: Files will be copied and moved in one operation.
     std::wstring from = buildDoubleNullString(paths);
 
-    std::wstring to = targetDir.toStdWString();
-    to.push_back(L'\0');
+    QString nativeTarget = QDir::toNativeSeparators(targetDir);
+    std::wstring to = nativeTarget.toStdWString();
     to.push_back(L'\0');
 
     SHFILEOPSTRUCTW op = {0};
@@ -45,9 +47,6 @@ bool FileOperationService::runExplorerOperation(
     op.pFrom  = from.c_str();
     op.pTo    = to.c_str();
     op.fFlags = FOF_NOCONFIRMATION;
-
-    //FIXME : SHFileOperation doesn't recognize the '/' character
-    //FIXME: in paths and directories. It needs to be converted to '\'.
 
     int result = SHFileOperationW(&op);
 
