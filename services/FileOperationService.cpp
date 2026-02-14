@@ -46,6 +46,9 @@ bool FileOperationService::runExplorerOperation(
     op.pTo    = to.c_str();
     op.fFlags = FOF_NOCONFIRMATION;
 
+    //FIXME : SHFileOperation doesn't recognize the '/' character
+    //FIXME: in paths and directories. It needs to be converted to '\'.
+
     int result = SHFileOperationW(&op);
 
     if(result != 0)

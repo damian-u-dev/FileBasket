@@ -38,7 +38,17 @@ void Window::onCopyClicked()
     if(dir.isEmpty())
         return;
 
-    QVector<int> selected; //TODO: Get indices of selected files;
+    QVector<int> selected;
+    const QModelIndexList& rows = ui->listView->selectionModel()->selectedRows();
+
+    for(const QModelIndex& index : rows)
+    {
+        selected.append(index.row());
+    }
+
+    if(selected.isEmpty())
+        return;
+
     emit requestCopy(dir, selected);
 }
 
@@ -48,7 +58,17 @@ void Window::onMoveClicked()
     if(dir.isEmpty())
         return;
 
-    QVector<int> selected; //TODO: Get indices of selected files;
+    QVector<int> selected;
+    const QModelIndexList& rows = ui->listView->selectionModel()->selectedRows();
+
+    for(const QModelIndex& index : rows)
+    {
+        selected.append(index.row());
+    }
+
+    if(selected.isEmpty())
+        return;
+
     emit requestMove(dir, selected);
 }
 
