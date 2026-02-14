@@ -1,11 +1,13 @@
-#include "FileOperationService.h"
-
 //Windows API
 #include <windows.h>
 #include <shellapi.h>
 //Windows API
 
 #include <string>
+#include <QDebug>
+#include <QStringLiteral>
+
+#include "FileOperationService.h"
 
 static std::wstring buildDoubleNullString(const QStringList& paths)
 {
@@ -29,7 +31,9 @@ bool FileOperationService::runExplorerOperation(
     if(paths.isEmpty() || targetDir.isEmpty())
         return false;
 
-    //Files will be copied and moved in one operation.
+    qInfo() << "Copying/Moving files...\n";
+
+    //NOTE: Files will be copied and moved in one operation.
     std::wstring from = buildDoubleNullString(paths);
 
     std::wstring to = targetDir.toStdWString();
@@ -45,10 +49,23 @@ bool FileOperationService::runExplorerOperation(
     int result = SHFileOperationW(&op);
 
     if(result != 0)
+    {
+        qWarning() << QStringLiteral("Copy/Move ended with error code: %1").arg(result);
         return false;
+    }
 
     if(op.fAnyOperationsAborted)
+    {
+        qInfo() << "Copy/Move aborted";
         return false;
+    }
+
+    const QString& operation = (type == OperationType::Copy) ? "FO_COPY" : "FO_MOVE";
+
+    qInfo() << "Copy/Move successfully done";
+    qInfo() << QStringLiteral("Total files: %1").arg(paths.size());
+    qInfo() << QStringLiteral("Target directory: %1").arg(targetDir);
+    qInfo() << QStringLiteral("Operation: %1").arg(operation);
 
     return true;
 }

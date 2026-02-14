@@ -31,6 +31,9 @@ void AppModel::addFilesToActiveTab(const QStringList& paths)
     if(paths.isEmpty())
         return;
 
+    qInfo() <<"Adding new files...\n";
+    qInfo("---------");
+
     Tab& tab = activeTab();
 
     int startIndex = tab.files.size();
@@ -55,6 +58,7 @@ void AppModel::addFilesToActiveTab(const QStringList& paths)
         item.path = normalizedPath;
         item.size = -1;
 
+        qInfo() << QStringLiteral("Added: %1").arg(info.fileName());
         tab.files.push_back(item);
         existingPaths.insert(normalizedPath);
         addedCount++;
@@ -63,6 +67,9 @@ void AppModel::addFilesToActiveTab(const QStringList& paths)
     {
         emit filesAdded(startIndex, addedCount);
     }
+    qInfo("---------\n");
+    qInfo() << "Adding new files done";
+    qInfo() << QStringLiteral("Total added files: %1").arg(addedCount);
 }
 
 void AppModel::removeFilesFromActiveTab(const QVector<int>& rows)
