@@ -30,10 +30,12 @@ public:
     void setCurrentTab(int index);
     void addFilesToActiveTab(const QStringList& paths);
     void removeFilesFromActiveTab(const QVector<int>& rows);
+    void updatePaths(const QVector<int>& rows, const QString& targetDir);
 
 signals:
     void filesAdded(int startIndex, int count);
     void filesRemoved(const QVector<int>& rows);
+    void filesUpdated(const QVector<int>& rows);
 };
 
 #endif // APPMODEL_H

@@ -24,6 +24,7 @@ public:
 public slots:
     void onFilesAdded(int startIndex, int count);
     void onFilesRemoved(const QVector<int>& rows);
+    void onFilesUpdated(const QVector<int>& rows);
 };
 
 #endif // FILELISTMODEL_H

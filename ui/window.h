@@ -5,6 +5,7 @@
 
 class AppModel;
 class FileBasketController;
+class FileListModel;
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -18,6 +19,7 @@ private:
     Q_OBJECT
     AppModel& model;
     FileBasketController& controller;
+    FileListModel* fileListModel = nullptr;
 
 public:
     Window(AppModel& model, FileBasketController& ctrl, QWidget *parent = nullptr);

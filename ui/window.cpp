@@ -85,7 +85,7 @@ void Window::setupUi()
 
 void Window::setupListView()
 {
-    FileListModel* fileListModel = new FileListModel(model, this);
+    fileListModel = new FileListModel(model, this);
     ui->listView->setModel(fileListModel);
     ui->listView->setController(&controller);
     ui->listView->setSelectionMode(QAbstractItemView::ExtendedSelection);
@@ -97,8 +97,9 @@ void Window::setupListView()
     ui->listView->setIconSize(QSize(25, 25));
     ui->listView->setUniformItemSizes(true);
 
-    QObject::connect(&model, &AppModel::filesAdded, fileListModel, &FileListModel::onFilesAdded);
-    QObject::connect(&model, &AppModel::filesRemoved, fileListModel, &FileListModel::onFilesRemoved);
+    connect(&model, &AppModel::filesAdded,   fileListModel, &FileListModel::onFilesAdded);
+    connect(&model, &AppModel::filesRemoved, fileListModel, &FileListModel::onFilesRemoved);
+    connect(&model, &AppModel::filesUpdated, fileListModel, &FileListModel::onFilesUpdated);
 }
 
 void Window::setupConnections()

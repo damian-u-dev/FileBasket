@@ -2,6 +2,7 @@
 
 #include <QSet>
 #include <QFileInfo>
+#include <QDir>
 
 AppModel::AppModel()
 {
@@ -90,4 +91,23 @@ void AppModel::removeFilesFromActiveTab(const QVector<int>& rows)
             files.removeAt(row);
 
     emit filesRemoved(rows);
+}
+
+void AppModel::updatePaths(const QVector<int>& rows, const QString& targetDir)
+{
+    if(rows.isEmpty())
+        return;
+
+    auto& files = activeTab().files;
+    for(int row : rows)
+    {
+        if(row < 0 || row >= files.size())
+            continue;
+
+        QFileInfo info(files[row].path);
+        QString newPath = QDir(targetDir).filePath(info.fileName());
+        files[row].path = newPath;
+    }
+
+    emit filesUpdated(rows);
 }

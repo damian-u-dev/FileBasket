@@ -68,7 +68,22 @@ void FileBasketController::moveTo(const QString& targetDir, const QVector<int>& 
         if(index >= 0 && index < tab.files.size())
             paths << tab.files[index].path;
     }
-    FileOperationService::runExplorerOperation(paths, targetDir, OperationType::Move);
+    bool success = FileOperationService::runExplorerOperation(paths, targetDir, OperationType::Move);
+
+    if(!success)
+        return;
+
+    QMessageBox::StandardButton answer = QMessageBox::question(nullptr,
+                    "Confirm removing",
+                    "All the files were successfully moved. Remove them from the current tab?");
+    if(answer == QMessageBox::Yes)
+    {
+        model.removeFilesFromActiveTab(selectedIndices);
+    }
+    else
+    {
+        model.updatePaths(selectedIndices, targetDir);
+    }
 }
 
 void FileBasketController::setActiveTab(int index)

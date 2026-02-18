@@ -93,3 +93,12 @@ void FileListModel::onFilesRemoved(const QVector<int>& rows)
         endRemoveRows();
     }
 }
+
+void FileListModel::onFilesUpdated(const QVector<int>& rows)
+{
+    for(int row : rows)
+    {
+        QModelIndex index = createIndex(row, 0);
+        emit dataChanged(index, index);
+    }
+}
