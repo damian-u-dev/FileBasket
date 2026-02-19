@@ -40,6 +40,16 @@ QVariant FileListModel::data(const QModelIndex &index, int role) const
         return QFileInfo(item.path).fileName();
     }
 
+    if(role == FilePathRole)
+    {
+        return item.path;
+    }
+
+    if(role == FileSizeRole)
+    {
+        return item.size;
+    }
+
     if(role == Qt::ToolTipRole)
     {
         return item.path;

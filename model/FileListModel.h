@@ -15,6 +15,11 @@ private:
     AppModel& model;
 
 public:
+    enum Roles
+    {
+        FilePathRole = Qt::UserRole + 1,
+        FileSizeRole
+    };
     FileListModel(AppModel& model, QObject* parent = nullptr);
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;

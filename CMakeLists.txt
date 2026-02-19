@@ -32,6 +32,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         ui/FileListView.h ui/FileListView.cpp
         controller/FileBasketController.h controller/FileBasketController.cpp
         ui/res.qrc
+        ui/FileItemDelegate.h ui/FileItemDelegate.cpp
     )
 
   target_include_directories(FileBasket PRIVATE

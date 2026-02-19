@@ -3,6 +3,7 @@
 #include "../model/AppModel.h"
 #include "../model/FileListModel.h"
 #include "../controller/FileBasketController.h"
+#include "FileItemDelegate.h"
 
 #include <QVector>
 #include <QString>
@@ -87,6 +88,10 @@ void Window::setupListView()
 {
     fileListModel = new FileListModel(model, this);
     ui->listView->setModel(fileListModel);
+
+    FileItemDelegate* fileItemDelegate = new FileItemDelegate(this);
+    ui->listView->setItemDelegate(fileItemDelegate);
+
     ui->listView->setController(&controller);
     ui->listView->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
