@@ -49,13 +49,23 @@ void FileItemDelegate::paint(QPainter* painter,
             ? opt.palette.highlightedText().color()
             : opt.palette.text().color());
 
-    painter->drawText(textRect.adjusted(0, 0, 0, -20), name);
+    QFontMetrics fmName(opt.font);
+    QString elidedName =
+        fmName.elidedText(name, Qt::ElideRight, textRect.width());
+
+    painter->drawText(textRect.adjusted(0, 0, 0, -20), elidedName);
 
     painter->setPen(selected 
             ? opt.palette.highlightedText().color()
             : QColor(120, 120, 120));
 
-    painter->drawText(textRect.adjusted(0, 20, 0, 0), path + " | " + QString::number(size) + " bytes");
+    QFontMetrics fmPath(opt.font);
+    QString fullPath = path + " | " + QString::number(size) + " bytes";
+
+    QString elidedPath =
+        fmPath.elidedText(fullPath, Qt::ElideMiddle, textRect.width());
+
+    painter->drawText(textRect.adjusted(0, 20, 0, 0), elidedPath);
 
     painter->restore();
 }
