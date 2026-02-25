@@ -39,7 +39,7 @@ void FileItemDelegate::paint(QPainter* painter,
 
     QString name  = index.data(Qt::DisplayRole).toString();
     QString path  = index.data(FileListModel::FilePathRole).toString();
-    qint64  size  = index.data(FileListModel::FileSizeRole).toLongLong();
+    QString size  = index.data(FileListModel::FileSizeRole).toString();
 
     QRect textRect = opt.rect.adjusted(textLeft, 5, -5, -5);
 
@@ -60,7 +60,7 @@ void FileItemDelegate::paint(QPainter* painter,
             : QColor(120, 120, 120));
 
     QFontMetrics fmPath(opt.font);
-    QString fullPath = path + " | " + QString::number(size) + " bytes";
+    QString fullPath = path + " | " + size;
 
     QString elidedPath =
         fmPath.elidedText(fullPath, Qt::ElideMiddle, textRect.width());

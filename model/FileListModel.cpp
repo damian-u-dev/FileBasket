@@ -47,7 +47,7 @@ QVariant FileListModel::data(const QModelIndex &index, int role) const
 
     if(role == FileSizeRole)
     {
-        return item.size;
+        return QLocale().formattedDataSize(item.size);
     }
 
     if(role == Qt::ToolTipRole)

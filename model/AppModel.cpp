@@ -57,7 +57,7 @@ void AppModel::addFilesToActiveTab(const QStringList& paths)
 
         FileItem item;
         item.path = normalizedPath;
-        item.size = -1;
+        item.size = info.size();
 
         qInfo() << QStringLiteral("Added: %1").arg(info.fileName());
         tab.files.push_back(item);
