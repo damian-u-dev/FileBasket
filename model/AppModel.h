@@ -36,6 +36,7 @@ signals:
     void filesAdded(int startIndex, int count);
     void filesRemoved(const QVector<int>& rows);
     void filesUpdated(const QVector<int>& rows);
+    void modelChanged();
 };
 
 #endif // APPMODEL_H

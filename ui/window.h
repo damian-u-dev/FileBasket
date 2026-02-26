@@ -25,6 +25,7 @@ public:
     Window(AppModel& model, FileBasketController& ctrl, QWidget *parent = nullptr);
     ~Window();
 
+
 private:
     void setupUi();
     void setupListView();
@@ -42,6 +43,7 @@ private slots:
     void onAddClicked();
     void onCopyClicked();
     void onMoveClicked();
+    void updateStatusBar();
 
 private:
     Ui::Window *ui;

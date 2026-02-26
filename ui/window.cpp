@@ -112,6 +112,9 @@ void Window::setupConnections()
     connect(ui->buttonAdd, &QPushButton::clicked, this, &Window::onAddClicked);
     connect(ui->buttonCopy, &QPushButton::clicked, this, &Window::onCopyClicked);
     connect(ui->buttonMove, &QPushButton::clicked, this, &Window::onMoveClicked);
+
+    connect(&model, &AppModel::modelChanged, this, &Window::updateStatusBar);
+    connect(ui->listView->selectionModel(), &QItemSelectionModel::selectionChanged, this, &Window::updateStatusBar);
 }
 
 void Window::setupAnimations()
@@ -132,4 +135,42 @@ void Window::setupEffects()
     shadow->setOffset(0, 8);
     shadow->setColor(QColor(0, 0, 0, 150));
     ui->centralwidget->setGraphicsEffect(shadow);
+}
+
+void Window::updateStatusBar()
+{
+    const auto& files = model.activeTab().files;
+
+    int totalCount = files.size();
+    qint64 totalSize = 0;
+
+    for(const auto& file : files)
+        totalSize += file.size;
+
+    QModelIndexList selected =
+        ui->listView->selectionModel()->selectedRows();
+
+    if(!selected.isEmpty())
+    {
+        qint64 selectedSize = 0;
+
+        for(const QModelIndex& index : std::as_const(selected))
+        {
+            int row = index.row();
+            if(row >= 0 && row < files.size())
+                selectedSize += files[row].size;
+        }
+
+        statusBar()->showMessage(
+            QString("Selected: %1 | Size: %2")
+                .arg(selected.size())
+                .arg(QLocale().formattedDataSize(selectedSize)));
+    }
+    else
+    {
+        statusBar()->showMessage(
+            QString("Total elements: %1 | Size: %2")
+            .arg(totalCount)
+            .arg(QLocale().formattedDataSize(totalSize)));
+    }
 }

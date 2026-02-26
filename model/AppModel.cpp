@@ -25,6 +25,7 @@ void AppModel::setCurrentTab(int index)
         return;
 
     currentTab = index;
+    emit modelChanged();
 }
 
 void AppModel::addFilesToActiveTab(const QStringList& paths)
@@ -67,6 +68,7 @@ void AppModel::addFilesToActiveTab(const QStringList& paths)
     if(addedCount > 0)
     {
         emit filesAdded(startIndex, addedCount);
+        emit modelChanged();
     }
     qInfo("---------\n");
     qInfo() << "Adding new files done";
@@ -91,6 +93,7 @@ void AppModel::removeFilesFromActiveTab(const QVector<int>& rows)
             files.removeAt(row);
 
     emit filesRemoved(rows);
+    emit modelChanged();
 }
 
 void AppModel::updatePaths(const QVector<int>& rows, const QString& targetDir)
