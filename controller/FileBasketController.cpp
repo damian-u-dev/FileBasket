@@ -4,6 +4,7 @@
 
 #include <QVector>
 #include <QMessageBox>
+#include <QInputDialog>
 
 FileBasketController::FileBasketController(AppModel& model, QObject* parent)
     : QObject(parent),
@@ -89,4 +90,61 @@ void FileBasketController::moveTo(const QString& targetDir, const QVector<int>& 
 void FileBasketController::setActiveTab(int index)
 {
     model.setCurrentTab(index);
+}
+
+void FileBasketController::moveItems(const QVector<int>& indices)
+{
+    if(indices.isEmpty())
+        return;
+
+    QStringList names = model.tabNames();
+    int currentIndex = model.getCurrentTabIndex();
+    names.removeAt(currentIndex);
+
+    bool ok = false;
+    QString chosen = QInputDialog::getItem(
+        nullptr,
+        "Select Tab",
+        "Move to:",
+        names,
+        0,
+        false,
+        &ok);
+
+    if(!ok || chosen.isEmpty())
+        return;
+
+    int indexOldTab = model.getCurrentTabIndex();
+    int indexSelectedTab = model.getTabIndexByName(chosen);
+
+    if(indexSelectedTab < 0 || indexSelectedTab >= model.getSizeTabs())
+        return;
+
+    const QString oldTab = model.getTabName(indexOldTab);
+    const QString newTab = model.getTabName(indexSelectedTab);
+
+    //Preparing message
+    QString elem = (indices.size() > 1)
+                ? QString("%1 files").arg(indices.size())
+                : QString("%1 file").arg(indices.size());
+
+    QString readyMessage = QStringLiteral("Do you want to move %1 from \"%2\" into \"%3\"?")
+                .arg(elem, oldTab, newTab);
+
+    QMessageBox::StandardButton answer =
+        QMessageBox::question(nullptr, "Confirm moving", readyMessage);
+
+
+    if(answer == QMessageBox::Yes)
+    {
+        int expectedMoved = indices.size();
+        int totalMoved = model.moveFilesFromActiveTab(indices, indexSelectedTab);
+
+        QString elem = (expectedMoved > 1)
+                           ? QString("%1 out of %2 files were moved to").arg(totalMoved).arg(expectedMoved)
+                           : QString("%1 out of %2 file was moved to").arg(totalMoved).arg(expectedMoved);
+
+        QMessageBox::information(nullptr, "Info"
+                ,QString("%1 \"%3\"").arg(elem).arg(newTab));
+    }
 }

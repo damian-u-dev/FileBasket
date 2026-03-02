@@ -7,6 +7,7 @@
 AppModel::AppModel()
 {
     tabs.push_back({"Default", {}}); //TODO: PlaceHolder;
+    tabs.push_back({"Test move", {}}); //TODO: PlaceHolder;
 }
 
 Tab& AppModel::activeTab()
@@ -113,4 +114,75 @@ void AppModel::updatePaths(const QVector<int>& rows, const QString& targetDir)
     }
 
     emit filesUpdated(rows);
+}
+
+int AppModel::moveFilesFromActiveTab(QVector<int> rows, int indexAnotherTab)
+{
+    if(indexAnotherTab < 0 || indexAnotherTab >= tabs.size())
+        return 0;
+
+    if(rows.isEmpty())
+        return 0;
+
+    auto& sourceTab = tabs[currentTab].files;
+    auto& targetTab = tabs[indexAnotherTab].files;
+
+    std::sort(rows.begin(), rows.end(), std::greater<>());
+
+    QSet<QString> existingPathsTarget;
+    for(const FileItem& item : targetTab)
+        existingPathsTarget.insert(item.path);
+
+    int totalMoved = 0;
+
+    for(int row : rows)
+    {
+        if(row < 0 || row >= sourceTab.size())
+            continue;
+
+        const QString& path = sourceTab[row].path;
+
+        if(existingPathsTarget.contains(path))
+            continue;
+
+        targetTab.push_back(std::move(sourceTab[row]));
+        sourceTab.removeAt(row);
+
+        totalMoved++;
+    }
+
+    emit filesRemoved(rows);
+    emit modelChanged();
+
+    return totalMoved;
+}
+
+QStringList AppModel::tabNames() const
+{
+    QStringList names;
+    for(const Tab& tab : tabs)
+        names.append(tab.name);
+    return names;
+}
+
+int AppModel::getCurrentTabIndex() const
+{
+    return currentTab;
+}
+
+QString AppModel::getTabName(int index) const
+{
+    if(index >= 0 && index < getSizeTabs())
+        return tabs[index].name;
+    return QString();
+}
+
+int AppModel::getTabIndexByName(const QString& tabName)
+{
+    for(int i = 0; i < getSizeTabs(); i++)
+    {
+        if(getTabName(i) == tabName)
+            return i;
+    }
+    return -1;
 }

@@ -43,7 +43,7 @@ void FileListView::contextMenuEvent(QContextMenuEvent* event)
     }
     else if(chosen == moveAction)
     {
-        //TODO: Call the controller
+        controller->moveItems(rows);
     }
 }
 

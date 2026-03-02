@@ -31,6 +31,11 @@ public:
     void addFilesToActiveTab(const QStringList& paths);
     void removeFilesFromActiveTab(const QVector<int>& rows);
     void updatePaths(const QVector<int>& rows, const QString& targetDir);
+    int moveFilesFromActiveTab(QVector<int> rows, int indexAnotherTab);
+    QStringList tabNames() const;
+    int getCurrentTabIndex() const;
+    QString getTabName(int index) const;
+    int getTabIndexByName(const QString& tabName);
 
 signals:
     void filesAdded(int startIndex, int count);
