@@ -82,6 +82,7 @@ Window::~Window()
 void Window::setupUi()
 {
     setupListView();
+    setupTabBar();
 }
 
 void Window::setupListView()
@@ -115,6 +116,8 @@ void Window::setupConnections()
 
     connect(&model, &AppModel::modelChanged, this, &Window::updateStatusBar);
     connect(ui->listView->selectionModel(), &QItemSelectionModel::selectionChanged, this, &Window::updateStatusBar);
+
+    connect(tabBar, &QTabBar::currentChanged, this, &Window::onTabChanged);
 }
 
 void Window::setupAnimations()
@@ -173,4 +176,24 @@ void Window::updateStatusBar()
             .arg(totalCount)
             .arg(QLocale().formattedDataSize(totalSize)));
     }
+}
+
+void Window::setupTabBar()
+{
+    tabBar = new QTabBar(this);
+    tabBar->setExpanding(true);
+    tabBar->setTabsClosable(false);
+    tabBar->setMovable(false);
+    ui->verticalLayout_3->insertWidget(0, tabBar);
+
+    QStringList names = model.tabNames();
+    for(const QString& name : std::as_const(names))
+    {
+        tabBar->addTab(name);
+    }
+}
+
+void Window::onTabChanged(int index)
+{
+    model.setCurrentTab(index);
 }

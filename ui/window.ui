@@ -16,62 +16,30 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout_2">
     <item row="0" column="0">
-     <layout class="QGridLayout" name="gridLayout">
-      <property name="horizontalSpacing">
-       <number>20</number>
-      </property>
-      <item row="1" column="0" colspan="3">
-       <widget class="FileListView" name="listView">
-        <property name="spacing">
-         <number>3</number>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <item>
        <widget class="QPushButton" name="buttonAdd">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
         <property name="text">
          <string>Add</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="2">
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <property name="spacing">
-         <number>17</number>
+      <item>
+       <widget class="FileListView" name="listView"/>
+      </item>
+      <item>
+       <widget class="QPushButton" name="buttonMove">
+        <property name="text">
+         <string>Move</string>
         </property>
-        <item>
-         <widget class="QPushButton" name="buttonCopy">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Copy</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="buttonMove">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Move</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="buttonCopy">
+        <property name="text">
+         <string>Copy</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </item>

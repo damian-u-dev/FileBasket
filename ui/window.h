@@ -2,6 +2,7 @@
 #define WINDOW_H
 
 #include <QMainWindow>
+#include <QTabBar>
 
 class AppModel;
 class FileBasketController;
@@ -20,6 +21,7 @@ private:
     AppModel& model;
     FileBasketController& controller;
     FileListModel* fileListModel = nullptr;
+    QTabBar* tabBar;
 
 public:
     Window(AppModel& model, FileBasketController& ctrl, QWidget *parent = nullptr);
@@ -32,6 +34,7 @@ private:
     void setupConnections();
     void setupAnimations();
     void setupEffects();
+    void setupTabBar();
 
 signals:
     void requestAddFiles(const QStringList& paths);
@@ -44,6 +47,7 @@ private slots:
     void onCopyClicked();
     void onMoveClicked();
     void updateStatusBar();
+    void onTabChanged(int index);
 
 private:
     Ui::Window *ui;
