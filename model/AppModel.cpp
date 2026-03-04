@@ -140,6 +140,8 @@ int AppModel::moveFilesFromActiveTab(QVector<int> rows, int indexAnotherTab)
 
     int totalMoved = 0;
 
+    QVector<FileItem> filesMove;
+
     for(int row : rows)
     {
         if(row < 0 || row >= sourceTab.size())
@@ -150,10 +152,15 @@ int AppModel::moveFilesFromActiveTab(QVector<int> rows, int indexAnotherTab)
         if(existingPathsTarget.contains(path))
             continue;
 
-        targetTab.push_back(std::move(sourceTab[row]));
+        filesMove.push_back(std::move(sourceTab[row]));
         sourceTab.removeAt(row);
 
         totalMoved++;
+    }
+
+    for(auto it = filesMove.rbegin(); it != filesMove.rend(); it++)
+    {
+        targetTab.push_back(*it);
     }
 
     emit filesRemoved(rows);
