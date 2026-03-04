@@ -42,6 +42,7 @@ signals:
     void filesRemoved(const QVector<int>& rows);
     void filesUpdated(const QVector<int>& rows);
     void modelChanged();
+    void currentTabChanged(int index);
 };
 
 #endif // APPMODEL_H

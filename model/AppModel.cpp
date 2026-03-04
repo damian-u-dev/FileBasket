@@ -25,7 +25,12 @@ void AppModel::setCurrentTab(int index)
     if(index < 0 || index > getSizeTabs())
         return;
 
+    if(index == currentTab)
+        return;
+
     currentTab = index;
+
+    emit currentTabChanged(index);
     emit modelChanged();
 }
 

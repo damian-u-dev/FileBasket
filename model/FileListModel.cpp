@@ -112,3 +112,9 @@ void FileListModel::onFilesUpdated(const QVector<int>& rows)
         emit dataChanged(index, index);
     }
 }
+
+void FileListModel::onCurrentTabChanged(int index)
+{
+    beginResetModel();
+    endResetModel();
+}

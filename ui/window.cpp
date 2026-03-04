@@ -106,6 +106,7 @@ void Window::setupListView()
     connect(&model, &AppModel::filesAdded,   fileListModel, &FileListModel::onFilesAdded);
     connect(&model, &AppModel::filesRemoved, fileListModel, &FileListModel::onFilesRemoved);
     connect(&model, &AppModel::filesUpdated, fileListModel, &FileListModel::onFilesUpdated);
+    connect(&model, &AppModel::currentTabChanged, fileListModel, &FileListModel::onCurrentTabChanged);
 }
 
 void Window::setupConnections()

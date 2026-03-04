@@ -30,6 +30,7 @@ public slots:
     void onFilesAdded(int startIndex, int count);
     void onFilesRemoved(const QVector<int>& rows);
     void onFilesUpdated(const QVector<int>& rows);
+    void onCurrentTabChanged(int index);
 };
 
 #endif // FILELISTMODEL_H
