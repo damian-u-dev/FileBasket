@@ -198,3 +198,17 @@ int AppModel::getTabIndexByName(const QString& tabName)
     }
     return -1;
 }
+
+bool AppModel::createTab(const QString& name)
+{
+    for(const Tab& tab : std::as_const(tabs))
+    {
+        if(tab.name == name)
+            return false;
+    }
+
+    tabs.push_back({name, {}});
+    emit tabsChanged();
+
+    return true;
+}

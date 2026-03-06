@@ -148,3 +148,13 @@ void FileBasketController::moveItems(const QVector<int>& indices)
                 ,QString("%1 \"%3\"").arg(elem).arg(newTab));
     }
 }
+
+void FileBasketController::createTab(const QString& name)
+{
+    if(!model.createTab(name))
+    {
+        QMessageBox::warning(nullptr,
+                             "Error",
+                             "Tab with this name already exists");
+    }
+}

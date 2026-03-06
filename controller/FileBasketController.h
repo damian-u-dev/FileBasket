@@ -13,6 +13,7 @@ public:
     FileBasketController(AppModel& model, QObject* parent = nullptr);
     void removeItems(const QVector<int>& indices);
     void moveItems(const QVector<int>& indices);
+    void createTab(const QString& name);
 
 public slots:
     void addFiles(const QStringList& paths);

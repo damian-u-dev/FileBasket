@@ -12,6 +12,7 @@
 #include <QAbstractItemView>
 #include <QGraphicsDropShadowEffect>
 #include <QPropertyAnimation>
+#include <QInputDialog>
 
 Window::Window(AppModel& model, FileBasketController& ctrl, QWidget *parent)
     : QMainWindow(parent)
@@ -116,9 +117,10 @@ void Window::setupConnections()
     connect(ui->buttonMove, &QPushButton::clicked, this, &Window::onMoveClicked);
 
     connect(&model, &AppModel::modelChanged, this, &Window::updateStatusBar);
-    connect(ui->listView->selectionModel(), &QItemSelectionModel::selectionChanged, this, &Window::updateStatusBar);
+    connect(tabBar, &QTabBar::currentChanged, this, &Window::onClickTab);
+    connect(&model, &AppModel::tabsChanged, this, &Window::rebuildTabs);
 
-    connect(tabBar, &QTabBar::currentChanged, this, &Window::onTabChanged);
+    connect(ui->listView->selectionModel(), &QItemSelectionModel::selectionChanged, this, &Window::updateStatusBar);
 }
 
 void Window::setupAnimations()
@@ -187,14 +189,59 @@ void Window::setupTabBar()
     tabBar->setMovable(false);
     ui->verticalLayout_3->insertWidget(0, tabBar);
 
-    QStringList names = model.tabNames();
-    for(const QString& name : std::as_const(names))
+    buildTabs(model.tabNames());
+}
+
+void Window::onClickTab(int index)
+{
+    if(index == tabBar->count() - 1)
+    {
+        QSignalBlocker blocker(tabBar);
+
+        tabBar->setCurrentIndex(model.getCurrentTabIndex());
+        createNewTab();
+        return;
+    }
+    model.setCurrentTab(index);
+}
+
+void Window::buildTabs(const QStringList& names)
+{
+    for(const QString& name : names)
     {
         tabBar->addTab(name);
     }
+    tabBar->addTab("+");
 }
 
-void Window::onTabChanged(int index)
+void Window::createNewTab()
 {
-    model.setCurrentTab(index);
+    bool ok;
+
+    QString name = QInputDialog::getText(
+        this,
+        "Create tab",
+        "Tab name:",
+        QLineEdit::Normal,
+        "",
+        &ok);
+
+    if(!ok || name.trimmed().isEmpty())
+        return;
+
+    controller.createTab(name);
+}
+
+void Window::rebuildTabs()
+{
+    clearTabs();
+    buildTabs(model.tabNames());
+}
+
+void Window::clearTabs()
+{
+    while (tabBar->count() > 0)
+    {
+        tabBar->removeTab(0);
+    }
 }

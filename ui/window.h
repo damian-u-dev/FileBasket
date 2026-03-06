@@ -36,6 +36,10 @@ private:
     void setupEffects();
     void setupTabBar();
 
+    void buildTabs(const QStringList& names);
+    void createNewTab();
+    void clearTabs();
+
 signals:
     void requestAddFiles(const QStringList& paths);
     void requestCopy(const QString& targetDir, const QVector<int>& selectedIndices);
@@ -47,7 +51,8 @@ private slots:
     void onCopyClicked();
     void onMoveClicked();
     void updateStatusBar();
-    void onTabChanged(int index);
+    void onClickTab(int index);
+    void rebuildTabs();
 
 private:
     Ui::Window *ui;

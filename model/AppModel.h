@@ -36,6 +36,7 @@ public:
     int getCurrentTabIndex() const;
     QString getTabName(int index) const;
     int getTabIndexByName(const QString& tabName);
+    bool createTab(const QString& name);
 
 signals:
     void filesAdded(int startIndex, int count);
@@ -43,6 +44,7 @@ signals:
     void filesUpdated(const QVector<int>& rows);
     void modelChanged();
     void currentTabChanged(int index);
+    void tabsChanged();
 };
 
 #endif // APPMODEL_H
