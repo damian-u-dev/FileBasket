@@ -37,6 +37,7 @@ public:
     QString getTabName(int index) const;
     int getTabIndexByName(const QString& tabName);
     bool createTab(const QString& name);
+    bool isEmpty() const;
 
 signals:
     void filesAdded(int startIndex, int count);

@@ -212,3 +212,8 @@ bool AppModel::createTab(const QString& name)
 
     return true;
 }
+
+bool AppModel::isEmpty() const
+{
+    return tabs.isEmpty();
+}

@@ -84,6 +84,7 @@ void Window::setupUi()
 {
     setupListView();
     setupTabBar();
+    updateStatusBar();
 }
 
 void Window::setupListView()
@@ -145,6 +146,9 @@ void Window::setupEffects()
 
 void Window::updateStatusBar()
 {
+    if(model.isEmpty())
+        return;
+
     const auto& files = model.activeTab().files;
 
     int totalCount = files.size();
