@@ -40,6 +40,8 @@ private:
     void createNewTab();
     void clearTabs();
 
+    void setTabTitle();
+
 signals:
     void requestAddFiles(const QStringList& paths);
     void requestCopy(const QString& targetDir, const QVector<int>& selectedIndices);

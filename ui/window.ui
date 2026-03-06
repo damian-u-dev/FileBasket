@@ -18,14 +18,18 @@
     <item row="0" column="0">
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
+       <widget class="FileListView" name="listView"/>
+      </item>
+     </layout>
+    </item>
+    <item row="1" column="0">
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <item>
        <widget class="QPushButton" name="buttonAdd">
         <property name="text">
-         <string>Add</string>
+         <string>➕ Add</string>
         </property>
        </widget>
-      </item>
-      <item>
-       <widget class="FileListView" name="listView"/>
       </item>
       <item>
        <widget class="QPushButton" name="buttonMove">

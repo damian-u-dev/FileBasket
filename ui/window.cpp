@@ -85,6 +85,7 @@ void Window::setupUi()
     setupListView();
     setupTabBar();
     updateStatusBar();
+    setTabTitle();
 }
 
 void Window::setupListView()
@@ -206,7 +207,9 @@ void Window::onClickTab(int index)
         createNewTab();
         return;
     }
+
     model.setCurrentTab(index);
+    setTabTitle();
 }
 
 void Window::buildTabs(const QStringList& names)
@@ -248,4 +251,10 @@ void Window::clearTabs()
     {
         tabBar->removeTab(0);
     }
+}
+
+void Window::setTabTitle()
+{
+    QString tab = model.getCurrentTabName();
+    setWindowTitle(QString("%1 - FileBasket").arg(tab));
 }

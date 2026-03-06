@@ -217,3 +217,8 @@ bool AppModel::isEmpty() const
 {
     return tabs.isEmpty();
 }
+
+QString AppModel::getCurrentTabName() const
+{
+    return getTabName(currentTab);
+}
