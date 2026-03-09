@@ -10,7 +10,7 @@
 struct FileItem
 {
     QString path;
-    qint64 size = -1; //size of file
+    qint64 size = -1;
 };
 
 struct Tab
@@ -31,19 +31,19 @@ public:
     AppModel();
     ~AppModel();
     Tab& activeTab();
-    qsizetype getSizeTabs() const;
-    void setCurrentTab(int index);
+    qsizetype getAmountTabs() const;
+    void setActiveTab(int index);
     void addFilesToActiveTab(const QStringList& paths);
     void removeFilesFromActiveTab(const QVector<int>& rows);
     void updatePaths(const QVector<int>& rows, const QString& targetDir);
     int moveFilesFromActiveTab(QVector<int> rows, int indexAnotherTab);
-    QStringList tabNames() const;
-    int getCurrentTabIndex() const;
+    QStringList getTabNames() const;
+    int getIndexActiveTab() const;
     QString getTabName(int index) const;
     int getTabIndexByName(const QString& tabName);
     bool createTab(const QString& name);
-    bool isEmpty() const;
-    QString getCurrentTabName() const;
+    bool isAppModelEmpty() const;
+    QString getNameActiveTab() const;
     const QVector<Tab>& getTabs() const;
     void addFileToTab(const QString& tab, const QString& path, qint64 size);
 
@@ -52,7 +52,7 @@ signals:
     void filesRemoved(const QVector<int>& rows);
     void filesUpdated(const QVector<int>& rows);
     void modelChanged();
-    void currentTabChanged(int index);
+    void activeTabChanged(int index);
     void tabsChanged();
 };
 

@@ -19,14 +19,14 @@ Tab& AppModel::activeTab()
     return tabs[currentTab];
 }
 
-qsizetype AppModel::getSizeTabs() const
+qsizetype AppModel::getAmountTabs() const
 {
     return tabs.size();
 }
 
-void AppModel::setCurrentTab(int index)
+void AppModel::setActiveTab(int index)
 {
-    if(index < 0 || index > getSizeTabs())
+    if(index < 0 || index > getAmountTabs())
         return;
 
     if(index == currentTab)
@@ -34,7 +34,7 @@ void AppModel::setCurrentTab(int index)
 
     currentTab = index;
 
-    emit currentTabChanged(index);
+    emit activeTabChanged(index);
     emit modelChanged();
 }
 
@@ -173,7 +173,7 @@ int AppModel::moveFilesFromActiveTab(QVector<int> rows, int indexAnotherTab)
     return totalMoved;
 }
 
-QStringList AppModel::tabNames() const
+QStringList AppModel::getTabNames() const
 {
     QStringList names;
     for(const Tab& tab : tabs)
@@ -181,21 +181,21 @@ QStringList AppModel::tabNames() const
     return names;
 }
 
-int AppModel::getCurrentTabIndex() const
+int AppModel::getIndexActiveTab() const
 {
     return currentTab;
 }
 
 QString AppModel::getTabName(int index) const
 {
-    if(index >= 0 && index < getSizeTabs())
+    if(index >= 0 && index < getAmountTabs())
         return tabs[index].name;
     return QString();
 }
 
 int AppModel::getTabIndexByName(const QString& tabName)
 {
-    for(int i = 0; i < getSizeTabs(); i++)
+    for(int i = 0; i < getAmountTabs(); i++)
     {
         if(getTabName(i) == tabName)
             return i;
@@ -217,12 +217,12 @@ bool AppModel::createTab(const QString& name)
     return true;
 }
 
-bool AppModel::isEmpty() const
+bool AppModel::isAppModelEmpty() const
 {
     return tabs.isEmpty();
 }
 
-QString AppModel::getCurrentTabName() const
+QString AppModel::getNameActiveTab() const
 {
     return getTabName(currentTab);
 }

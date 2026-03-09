@@ -40,13 +40,13 @@ private:
     void createNewTab();
     void clearTabs();
 
-    void setTabTitle();
+    void setTitle();
 
 signals:
     void requestAddFiles(const QStringList& paths);
     void requestCopy(const QString& targetDir, const QVector<int>& selectedIndices);
     void requestMove(const QString& targetDir, const QVector<int>& selectedIndices);
-    void requestTabChanged(int index);
+    void requestActiveTabChanged(int index);
 
 private slots:
     void onAddClicked();

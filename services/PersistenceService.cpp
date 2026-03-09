@@ -21,7 +21,7 @@ QString PersistenceService::sessionPath() const
 void PersistenceService::save(const AppModel& model)
 {
     QJsonObject root;
-    root["currentTab"] = model.getCurrentTabIndex();
+    root["currentTab"] = model.getIndexActiveTab();
 
     QJsonArray tabsArray;
 
@@ -103,5 +103,5 @@ void PersistenceService::load(AppModel& model)
 		}
 	}
 	int currentTab = root["currentTab"].toInt();
-	model.setCurrentTab(currentTab);
+	model.setActiveTab(currentTab);
 }

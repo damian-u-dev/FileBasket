@@ -89,7 +89,7 @@ void FileBasketController::moveTo(const QString& targetDir, const QVector<int>& 
 
 void FileBasketController::setActiveTab(int index)
 {
-    model.setCurrentTab(index);
+    model.setActiveTab(index);
 }
 
 void FileBasketController::moveItems(const QVector<int>& indices)
@@ -97,8 +97,8 @@ void FileBasketController::moveItems(const QVector<int>& indices)
     if(indices.isEmpty())
         return;
 
-    QStringList names = model.tabNames();
-    int currentIndex = model.getCurrentTabIndex();
+    QStringList names = model.getTabNames();
+    int currentIndex = model.getIndexActiveTab();
     names.removeAt(currentIndex);
 
     bool ok = false;
@@ -114,10 +114,10 @@ void FileBasketController::moveItems(const QVector<int>& indices)
     if(!ok || chosen.isEmpty())
         return;
 
-    int indexOldTab = model.getCurrentTabIndex();
+    int indexOldTab = model.getIndexActiveTab();
     int indexSelectedTab = model.getTabIndexByName(chosen);
 
-    if(indexSelectedTab < 0 || indexSelectedTab >= model.getSizeTabs())
+    if(indexSelectedTab < 0 || indexSelectedTab >= model.getAmountTabs())
         return;
 
     const QString oldTab = model.getTabName(indexOldTab);

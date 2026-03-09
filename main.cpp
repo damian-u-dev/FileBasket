@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
     QObject::connect(&w, &Window::requestAddFiles, &controller, &FileBasketController::addFiles);
     QObject::connect(&w, &Window::requestCopy, &controller, &FileBasketController::copyTo);
     QObject::connect(&w, &Window::requestMove, &controller, &FileBasketController::moveTo);
-    QObject::connect(&w, &Window::requestTabChanged, &controller, &FileBasketController::setActiveTab);
+    QObject::connect(&w, &Window::requestActiveTabChanged, &controller, &FileBasketController::setActiveTab);
 
     w.show();
     return a.exec();

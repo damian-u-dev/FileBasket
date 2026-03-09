@@ -108,7 +108,7 @@ void Window::setupListView()
     connect(&model, &AppModel::filesAdded,   fileListModel, &FileListModel::onFilesAdded);
     connect(&model, &AppModel::filesRemoved, fileListModel, &FileListModel::onFilesRemoved);
     connect(&model, &AppModel::filesUpdated, fileListModel, &FileListModel::onFilesUpdated);
-    connect(&model, &AppModel::currentTabChanged, fileListModel, &FileListModel::onCurrentTabChanged);
+    connect(&model, &AppModel::activeTabChanged, fileListModel, &FileListModel::onCurrentTabChanged);
 }
 
 void Window::setupConnections()
@@ -146,7 +146,7 @@ void Window::setupEffects()
 
 void Window::updateStatusBar()
 {
-    if(model.isEmpty())
+    if(model.isAppModelEmpty())
         return;
 
     const auto& files = model.activeTab().files;
@@ -193,9 +193,9 @@ void Window::setupTabBar()
     tabBar->setMovable(false);
     ui->verticalLayout_3->insertWidget(0, tabBar);
 
-    buildTabs(model.tabNames());
-    tabBar->setCurrentIndex(model.getCurrentTabIndex());
-    setTabTitle();
+    buildTabs(model.getTabNames());
+    tabBar->setCurrentIndex(model.getIndexActiveTab());
+    setTitle();
 }
 
 void Window::onClickTab(int index)
@@ -204,13 +204,13 @@ void Window::onClickTab(int index)
     {
         QSignalBlocker blocker(tabBar);
 
-        tabBar->setCurrentIndex(model.getCurrentTabIndex());
+        tabBar->setCurrentIndex(model.getIndexActiveTab());
         createNewTab();
         return;
     }
 
-    model.setCurrentTab(index);
-    setTabTitle();
+    model.setActiveTab(index);
+    setTitle();
 }
 
 void Window::buildTabs(const QStringList& names)
@@ -243,7 +243,7 @@ void Window::createNewTab()
 void Window::rebuildTabs()
 {
     clearTabs();
-    buildTabs(model.tabNames());
+    buildTabs(model.getTabNames());
 }
 
 void Window::clearTabs()
@@ -254,8 +254,8 @@ void Window::clearTabs()
     }
 }
 
-void Window::setTabTitle()
+void Window::setTitle()
 {
-    QString tab = model.getCurrentTabName();
+    QString tab = model.getNameActiveTab();
     setWindowTitle(QString("%1 - FileBasket").arg(tab));
 }
