@@ -85,7 +85,6 @@ void Window::setupUi()
     setupListView();
     setupTabBar();
     updateStatusBar();
-    setTabTitle();
 }
 
 void Window::setupListView()
@@ -195,6 +194,8 @@ void Window::setupTabBar()
     ui->verticalLayout_3->insertWidget(0, tabBar);
 
     buildTabs(model.tabNames());
+    tabBar->setCurrentIndex(model.getCurrentTabIndex());
+    setTabTitle();
 }
 
 void Window::onClickTab(int index)

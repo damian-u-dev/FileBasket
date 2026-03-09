@@ -1,6 +1,8 @@
 #ifndef APPMODEL_H
 #define APPMODEL_H
 
+#include "../services/PersistenceService.h"
+
 #include <QString>
 #include <QVector>
 #include <QObject>
@@ -23,8 +25,11 @@ private:
     Q_OBJECT
     QVector<Tab> tabs;
     int currentTab = 0;
+    PersistenceService persistence;
+
 public:
     AppModel();
+    ~AppModel();
     Tab& activeTab();
     qsizetype getSizeTabs() const;
     void setCurrentTab(int index);
@@ -39,6 +44,8 @@ public:
     bool createTab(const QString& name);
     bool isEmpty() const;
     QString getCurrentTabName() const;
+    const QVector<Tab>& getTabs() const;
+    void addFileToTab(const QString& tab, const QString& path, qint64 size);
 
 signals:
     void filesAdded(int startIndex, int count);

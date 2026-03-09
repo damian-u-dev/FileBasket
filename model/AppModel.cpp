@@ -6,8 +6,12 @@
 
 AppModel::AppModel()
 {
-    tabs.push_back({"Default", {}}); //TODO: PlaceHolder;
-    tabs.push_back({"Test move", {}}); //TODO: PlaceHolder;
+    persistence.load(*this);
+}
+
+AppModel::~AppModel()
+{
+    persistence.save(*this);
 }
 
 Tab& AppModel::activeTab()
@@ -221,4 +225,15 @@ bool AppModel::isEmpty() const
 QString AppModel::getCurrentTabName() const
 {
     return getTabName(currentTab);
+}
+
+const QVector<Tab>& AppModel::getTabs() const
+{
+    return tabs;
+}
+
+void AppModel::addFileToTab(const QString& tab, const QString& path, qint64 size)
+{
+    int index = getTabIndexByName(tab);
+    tabs[index].files.push_back({path, size});
 }
