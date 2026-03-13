@@ -35,12 +35,13 @@ private:
     void setupAnimations();
     void setupEffects();
     void setupTabBar();
+    void setTitle();
 
     void buildTabs(const QStringList& names);
     void createNewTab();
     void clearTabs();
-
-    void setTitle();
+    void renameTab(int index);
+    void deleteTab(int index);
 
 signals:
     void requestAddFiles(const QStringList& paths);
@@ -55,6 +56,7 @@ private slots:
     void updateStatusBar();
     void onClickTab(int index);
     void rebuildTabs();
+    void onTabContextMenu(const QPoint& pos);
 
 private:
     Ui::Window *ui;

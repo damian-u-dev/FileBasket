@@ -14,6 +14,8 @@ public:
     void removeItems(const QVector<int>& indices);
     void moveItems(const QVector<int>& indices);
     void createTab(const QString& name);
+    void renameTab(int index, const QString& newName);
+    void deleteTab(int index);
 
 public slots:
     void addFiles(const QStringList& paths);

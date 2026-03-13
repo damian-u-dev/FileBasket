@@ -46,6 +46,8 @@ public:
     QString getNameActiveTab() const;
     const QVector<Tab>& getTabs() const;
     void addFileToTab(const QString& tab, const QString& path, qint64 size);
+    bool renameTab(int index, const QString& newName);
+    bool deleteTab(int index);
 
 signals:
     void filesAdded(int startIndex, int count);

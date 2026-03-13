@@ -13,6 +13,7 @@
 #include <QGraphicsDropShadowEffect>
 #include <QPropertyAnimation>
 #include <QInputDialog>
+#include <QMessageBox>
 
 Window::Window(AppModel& model, FileBasketController& ctrl, QWidget *parent)
     : QMainWindow(parent)
@@ -192,6 +193,9 @@ void Window::setupTabBar()
     tabBar->setTabsClosable(false);
     tabBar->setMovable(false);
     ui->verticalLayout_3->insertWidget(0, tabBar);
+    tabBar->setContextMenuPolicy(Qt::CustomContextMenu);
+
+    connect(tabBar, &QTabBar::customContextMenuRequested, this, &Window::onTabContextMenu);
 
     buildTabs(model.getTabNames());
     tabBar->setCurrentIndex(model.getIndexActiveTab());
@@ -258,4 +262,70 @@ void Window::setTitle()
 {
     QString tab = model.getNameActiveTab();
     setWindowTitle(QString("%1 - FileBasket").arg(tab));
+}
+
+void Window::onTabContextMenu(const QPoint& pos)
+{
+    int index = tabBar->tabAt(pos);
+
+    if(index < 0)
+        return;
+
+    if(index == tabBar->count() - 1)
+        return;
+
+    QMenu menu(this);
+
+    QAction* renameAction = menu.addAction("Rename Tab");
+    QAction* deleteAction = menu.addAction("Delete Tab");
+
+    QAction* selected =
+        menu.exec(tabBar->mapToGlobal(pos));
+
+    if(selected == renameAction)
+    {
+        renameTab(index);
+    }
+    if(selected == deleteAction)
+    {
+        deleteTab(index);
+    }
+}
+
+void Window::renameTab(int index)
+{
+    QString oldName = model.getTabName(index);
+
+    bool ok;
+
+    QString newName = QInputDialog::getText(
+        this,
+        "Rename tab",
+        "New tab name:",
+        QLineEdit::Normal,
+        oldName,
+        &ok
+        );
+
+    if(!ok || newName.trimmed().isEmpty())
+        return;
+
+    controller.renameTab(index, newName);
+}
+
+void Window::deleteTab(int index)
+{
+    QString name = model.getTabName(index);
+
+    QMessageBox::StandardButton answer =
+        QMessageBox::question(
+            this,
+            "Delete tab",
+            QString("Delete tab \"%1\"?").arg(name)
+            );
+
+    if(answer == QMessageBox::Yes)
+    {
+        controller.deleteTab(index);
+    }
 }

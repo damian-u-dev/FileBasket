@@ -158,3 +158,21 @@ void FileBasketController::createTab(const QString& name)
                              "Tab with this name already exists");
     }
 }
+
+void FileBasketController::renameTab(int index, const QString& newName)
+{
+    QString oldName = model.getTabName(index);
+    if(oldName == newName)
+        return;
+
+    model.renameTab(index, newName);
+}
+
+void FileBasketController::deleteTab(int index)
+{
+    if(model.getAmountTabs() <= 1)
+    {
+        return;
+    }
+    model.deleteTab(index);
+}

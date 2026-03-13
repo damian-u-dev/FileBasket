@@ -237,3 +237,25 @@ void AppModel::addFileToTab(const QString& tab, const QString& path, qint64 size
     int index = getTabIndexByName(tab);
     tabs[index].files.push_back({path, size});
 }
+
+bool AppModel::renameTab(int index, const QString& newName)
+{
+    if(index < 0 || index >= tabs.size())
+        return false;
+
+    tabs[index].name = newName;
+
+    emit tabsChanged();
+    return true;
+}
+
+bool AppModel::deleteTab(int index)
+{
+    if(index < 0 || index >= tabs.size())
+        return false;
+
+    tabs.removeAt(index);
+
+    emit tabsChanged();
+    return true;
+}
