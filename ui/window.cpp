@@ -4,6 +4,7 @@
 #include "../model/FileListModel.h"
 #include "../controller/FileBasketController.h"
 #include "FileItemDelegate.h"
+#include "CustomTabBar.h"
 
 #include <QVector>
 #include <QString>
@@ -119,7 +120,7 @@ void Window::setupConnections()
     connect(ui->buttonMove, &QPushButton::clicked, this, &Window::onMoveClicked);
 
     connect(&model, &AppModel::modelChanged, this, &Window::updateStatusBar);
-    connect(tabBar, &QTabBar::currentChanged, this, &Window::onClickTab);
+    connect(tabBar, &QTabBar::tabBarClicked, this, &Window::onClickTab);
     connect(&model, &AppModel::tabsChanged, this, &Window::rebuildTabs);
 
     connect(ui->listView->selectionModel(), &QItemSelectionModel::selectionChanged, this, &Window::updateStatusBar);
@@ -188,7 +189,7 @@ void Window::updateStatusBar()
 
 void Window::setupTabBar()
 {
-    tabBar = new QTabBar(this);
+    tabBar = new CustomTabBar(this);
     tabBar->setExpanding(true);
     tabBar->setTabsClosable(false);
     tabBar->setMovable(false);
@@ -207,9 +208,9 @@ void Window::onClickTab(int index)
     if(index == tabBar->count() - 1)
     {
         QSignalBlocker blocker(tabBar);
+        createNewTab();
 
         tabBar->setCurrentIndex(model.getIndexActiveTab());
-        createNewTab();
         return;
     }
 
@@ -246,8 +247,12 @@ void Window::createNewTab()
 
 void Window::rebuildTabs()
 {
+    QSignalBlocker blocker(tabBar);
+
     clearTabs();
     buildTabs(model.getTabNames());
+
+    tabBar->setCurrentIndex(model.getIndexActiveTab());
 }
 
 void Window::clearTabs()
