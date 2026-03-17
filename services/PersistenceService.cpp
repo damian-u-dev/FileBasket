@@ -7,6 +7,7 @@
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QStandardPaths>
+#include <QSaveFile>
 
 QString PersistenceService::sessionPath() const
 {
@@ -51,13 +52,13 @@ void PersistenceService::save(const AppModel& model)
     root["tabs"] = tabsArray;
 
     QJsonDocument doc(root);
-    QFile file(sessionPath());
+    QSaveFile file(sessionPath());
     
     if(!file.open(QIODevice::WriteOnly))
     	return;
 
     file.write(doc.toJson(QJsonDocument::Indented));
-    file.close();
+    file.commit();
 }
 
 void PersistenceService::load(AppModel& model)
