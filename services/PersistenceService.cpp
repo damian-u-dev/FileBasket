@@ -63,46 +63,83 @@ void PersistenceService::save(const AppModel& model)
 
 void PersistenceService::load(AppModel& model)
 {
-	QFile file(sessionPath());
-	
-	if(!file.exists())
-		return;
+    QFile file(sessionPath());
 
-	if(!file.open(QIODevice::ReadOnly))
-		return;
+    if(!file.exists())
+    {
+        model.createTab("Default");
+        return;
+    }
 
-	QByteArray data = file.readAll();
-	file.close();
+    if(!file.open(QIODevice::ReadOnly))
+    {
+        model.createTab("Default");
+        return;
+    }
 
-	QJsonDocument doc = QJsonDocument::fromJson(data);
+    QByteArray data = file.readAll();
+    file.close();
 
-	if(!doc.isObject())
-		return;
+    QJsonParseError error;
+    QJsonDocument doc =
+        QJsonDocument::fromJson(data, &error);
 
-	QJsonObject root = doc.object();
+    if(error.error != QJsonParseError::NoError)
+    {
+        model.createTab("Default");
+        return;
+    }
 
-	QJsonArray tabsArray = root["tabs"].toArray();
+    if(!doc.isObject())
+    {
+        model.createTab("Default");
+        return;
+    }
+
+    QJsonObject root = doc.object();
+    QJsonArray tabsArray = root["tabs"].toArray();
+
+    if(tabsArray.isEmpty())
+    {
+        model.createTab("Default");
+        return;
+    }
 
     for(const QJsonValue& tabVal : std::as_const(tabsArray))
-	{
-		QJsonObject tabObj = tabVal.toObject();
+    {
+        QJsonObject tabObj = tabVal.toObject();
 
-		QString name = tabObj["name"].toString();
+        QString name = tabObj["name"].toString();
 
-		model.createTab(name);
+        if(name.isEmpty())
+            name = "Tab";
 
-		QJsonArray filesArray = tabObj["files"].toArray();
+        model.createTab(name);
+
+        QJsonArray filesArray =
+            tabObj["files"].toArray();
 
         for(const QJsonValue& fileVal : std::as_const(filesArray))
-		{
-			QJsonObject fileObj = fileVal.toObject();
+        {
+            QJsonObject fileObj = fileVal.toObject();
+            QString path = fileObj["path"].toString();
+            qint64 size =  fileObj["size"].toInteger();
 
-			QString path = fileObj["path"].toString();
-			qint64 size = fileObj["size"].toInteger();
+            QFileInfo info(path);
 
-			model.addFileToTab(name, path, size);
-		}
-	}
-	int currentTab = root["currentTab"].toInt();
-	model.setActiveTab(currentTab);
+            if(!info.exists())
+                continue;
+
+            model.addFileToTab(name, path, size);
+        }
+    }
+
+    int currentTab =
+        root["currentTab"].toInt();
+
+    if(currentTab >= 0 &&
+        currentTab < model.getAmountTabs())
+    {
+        model.setActiveTab(currentTab);
+    }
 }
