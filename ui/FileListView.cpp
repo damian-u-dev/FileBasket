@@ -3,6 +3,7 @@
 
 #include <QContextMenuEvent>
 #include <QMenu>
+#include <QMimeData>
 
 FileListView::FileListView(QWidget* parent)
     : QListView(parent)
@@ -56,4 +57,27 @@ QVector<int> FileListView::selectedRows() const
         rows.push_back(index.row());
 
     return rows;
+}
+
+void FileListView::dragEnterEvent(QDragEnterEvent *event)
+{
+    if(event->mimeData()->hasUrls())
+        event->acceptProposedAction();
+}
+
+void FileListView::dragMoveEvent(QDragMoveEvent* event)
+{
+    event->acceptProposedAction();
+}
+
+void FileListView::dropEvent(QDropEvent* event)
+{
+    const QList<QUrl> urls = event->mimeData()->urls();
+
+    QStringList paths;
+
+    for(const QUrl& url : urls)
+        paths.append(url.toLocalFile());
+
+    emit filesDropped(paths);
 }

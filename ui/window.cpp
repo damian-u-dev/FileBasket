@@ -123,7 +123,17 @@ void Window::setupConnections()
     connect(tabBar, &QTabBar::tabBarClicked, this, &Window::onClickTab);
     connect(&model, &AppModel::tabsChanged, this, &Window::rebuildTabs);
 
-    connect(ui->listView->selectionModel(), &QItemSelectionModel::selectionChanged, this, &Window::updateStatusBar);
+    connect(ui->listView->selectionModel(),
+            &QItemSelectionModel::selectionChanged,
+            this,
+            &Window::updateStatusBar);
+
+    connect(ui->listView,
+            &FileListView::filesDropped,
+            &controller,
+            &FileBasketController::handleDrop);
+
+    //connect(&model, &AppModel::activeTabChanged, fileListModel, &FileListModel::onCurrentTabChanged);
 }
 
 void Window::setupAnimations()

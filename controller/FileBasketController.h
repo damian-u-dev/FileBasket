@@ -22,6 +22,11 @@ public slots:
     void copyTo(const QString& targetDir, const QVector<int>& selectedIndices);
     void moveTo(const QString& targetDir, const QVector<int>& selectedIndices);
     void setActiveTab(int index);
+    void handleDrop(const QStringList& paths);
+
+private:
+    void handleDirectoryDrop(const QString& path);
+    QStringList scanDirectory(const QString& path);
 };
 
 #endif // FILEBASKETCONTROLLER_H

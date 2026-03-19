@@ -254,6 +254,11 @@ bool AppModel::deleteTab(int index)
     if(index < 0 || index >= tabs.size())
         return false;
 
+    if(index == currentTab)
+    {
+        setActiveTab(currentTab - 1);
+    }
+
     tabs.removeAt(index);
 
     emit tabsChanged();

@@ -5,6 +5,9 @@
 #include <QVector>
 #include <QMessageBox>
 #include <QInputDialog>
+#include <QFileInfo>
+#include <QDirIterator>
+#include <QPushButton>
 
 FileBasketController::FileBasketController(AppModel& model, QObject* parent)
     : QObject(parent),
@@ -175,4 +178,81 @@ void FileBasketController::deleteTab(int index)
         return;
     }
     model.deleteTab(index);
+}
+
+void FileBasketController::handleDrop(const QStringList& paths)
+{
+    QStringList files;
+    QStringList directories;
+
+    for(const QString& path : paths)
+    {
+        QFileInfo info(path);
+
+        if(info.isDir())
+            directories.append(path);
+        else
+            files.append(path);
+    }
+
+    if(!files.isEmpty())
+        model.addFilesToActiveTab(files);
+
+    for(const QString& dir : directories)
+        handleDirectoryDrop(dir);
+}
+
+void FileBasketController::handleDirectoryDrop(const QString& path)
+{
+    QFileInfo info(path);
+
+    QMessageBox box;
+    box.setWindowTitle("Folder dropped");
+    box.setText(QString("Folder \"%1\" was dropped").arg(info.fileName()));
+
+    QAbstractButton* newTab =
+        box.addButton("Create new tab", QMessageBox::AcceptRole);
+    QAbstractButton* addCurrent =
+        box.addButton("Add to current tab", QMessageBox::AcceptRole);
+    QAbstractButton* cancel =
+        box.addButton("Cancel", QMessageBox::RejectRole);
+
+    box.exec();
+
+    if(box.clickedButton() == newTab)
+    {
+        model.createTab(info.fileName());
+
+        int indexOldTab = model.getIndexActiveTab();
+        int indexNewTab = model.getTabIndexByName(info.fileName());
+
+        model.setActiveTab(indexNewTab);
+
+        QStringList files = scanDirectory(path);
+
+        model.addFilesToActiveTab(files);
+        model.setActiveTab(indexOldTab);
+    }
+    else if(box.clickedButton() == addCurrent)
+    {
+        QStringList files = scanDirectory(path);
+        model.addFilesToActiveTab(files);
+    }
+    else if(box.clickedButton() == cancel)
+        return;
+}
+
+QStringList FileBasketController::scanDirectory(const QString& path)
+{
+    QStringList result;
+
+    QDirIterator it(
+        path,
+        QDir::Files,
+        QDirIterator::Subdirectories);
+
+    while(it.hasNext())
+        result.append(it.next());
+
+    return result;
 }
