@@ -120,7 +120,6 @@ void Window::setupConnections()
     connect(ui->buttonMove, &QPushButton::clicked, this, &Window::onMoveClicked);
 
     connect(&model, &AppModel::modelChanged, this, &Window::updateStatusBar);
-    connect(tabBar, &QTabBar::tabBarClicked, this, &Window::onClickTab);
     connect(&model, &AppModel::tabsChanged, this, &Window::rebuildTabs);
 
     connect(ui->listView->selectionModel(),
@@ -132,8 +131,6 @@ void Window::setupConnections()
             &FileListView::filesDropped,
             &controller,
             &FileBasketController::handleDrop);
-
-    //connect(&model, &AppModel::activeTabChanged, fileListModel, &FileListModel::onCurrentTabChanged);
 }
 
 void Window::setupAnimations()
@@ -199,14 +196,32 @@ void Window::updateStatusBar()
 
 void Window::setupTabBar()
 {
+    QHBoxLayout* tabLayout = new QHBoxLayout();
+    tabLayout->setContentsMargins(0, 0, 0, 0);
+    tabLayout->setSpacing(5);
+
     tabBar = new CustomTabBar(this);
-    tabBar->setExpanding(true);
-    tabBar->setTabsClosable(false);
-    tabBar->setMovable(false);
-    ui->verticalLayout_3->insertWidget(0, tabBar);
-    tabBar->setContextMenuPolicy(Qt::CustomContextMenu);
+
+    QPushButton* addButton = new QPushButton("+", this);
+    addButton->setFixedSize(43, 43);
+    addButton->setCursor(Qt::PointingHandCursor);
+
+    tabLayout->addWidget(tabBar);
+    tabLayout->addWidget(addButton);
+
+    ui->verticalLayout_3->insertLayout(0, tabLayout);
 
     connect(tabBar, &QTabBar::customContextMenuRequested, this, &Window::onTabContextMenu);
+    connect(tabBar, &QTabBar::tabBarClicked, this, &Window::onClickTab);
+    connect(addButton, &QPushButton::clicked, this, &Window::createNewTab);
+
+    tabBar->setExpanding(false);
+    tabBar->setUsesScrollButtons(true);
+    tabBar->setElideMode(Qt::ElideRight);
+    tabBar->setDocumentMode(true);
+    tabBar->setTabsClosable(false);
+    tabBar->setMovable(false);
+    tabBar->setContextMenuPolicy(Qt::CustomContextMenu);
 
     buildTabs(model.getTabNames());
     tabBar->setCurrentIndex(model.getIndexActiveTab());
@@ -215,15 +230,6 @@ void Window::setupTabBar()
 
 void Window::onClickTab(int index)
 {
-    if(index == tabBar->count() - 1)
-    {
-        QSignalBlocker blocker(tabBar);
-        createNewTab();
-
-        tabBar->setCurrentIndex(model.getIndexActiveTab());
-        return;
-    }
-
     model.setActiveTab(index);
     setTitle();
 }
@@ -234,7 +240,6 @@ void Window::buildTabs(const QStringList& names)
     {
         tabBar->addTab(name);
     }
-    tabBar->addTab("+");
 }
 
 void Window::createNewTab()

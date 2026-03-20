@@ -1,6 +1,8 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
+#include "CustomTabBar.h"
+
 #include <QMainWindow>
 #include <QTabBar>
 
@@ -21,7 +23,7 @@ private:
     AppModel& model;
     FileBasketController& controller;
     FileListModel* fileListModel = nullptr;
-    QTabBar* tabBar;
+    CustomTabBar* tabBar;
 
 public:
     Window(AppModel& model, FileBasketController& ctrl, QWidget *parent = nullptr);
