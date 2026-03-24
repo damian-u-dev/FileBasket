@@ -33,6 +33,9 @@ void FileListView::contextMenuEvent(QContextMenuEvent* event)
     QAction* moveAction = menu.addAction(
         multiple ? "Move elements" : "Move element");
 
+    removeAction->setIcon(QIcon(":/UI/resources/remove_element.ico"));
+    moveAction->setIcon(QIcon(":/UI/resources/move_element.ico"));
+
     QAction* chosen = menu.exec(event->globalPos());
 
     if(!chosen)

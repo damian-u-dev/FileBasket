@@ -291,13 +291,13 @@ void Window::onTabContextMenu(const QPoint& pos)
     if(index < 0)
         return;
 
-    if(index == tabBar->count() - 1)
-        return;
-
     QMenu menu(this);
 
     QAction* renameAction = menu.addAction("Rename Tab");
+    renameAction->setIcon(QIcon(":/UI/resources/rename_tab.ico"));
+
     QAction* deleteAction = menu.addAction("Delete Tab");
+    deleteAction->setIcon(QIcon(":/UI/resources/delete_tab.ico"));
 
     QAction* selected =
         menu.exec(tabBar->mapToGlobal(pos));

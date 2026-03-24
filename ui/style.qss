@@ -1,5 +1,6 @@
+/* ---Main Window--- */
 QWidget {
-    background-color: #202020;
+    background-color: #1e1e1e;
     color: #f0f0f0;
     font-family: "Segoe UI Variable", "Segoe UI";
     font-size: 14px;
@@ -13,7 +14,7 @@ QMainWindow {
     background-color: #202020;
 }
 
-
+/* Buttons */
 QPushButton {
     background-color: #2d2d2d;
     border: 1px solid #3a3a3a;
@@ -23,6 +24,7 @@ QPushButton {
 
 QPushButton:hover {
     background-color: #3a3a3a;
+    border: 1px solid #4a4a4a;
 }
 
 QPushButton:pressed {
@@ -30,28 +32,38 @@ QPushButton:pressed {
 }
 
 #buttonAdd {
-    background-color: #3daee9;
-    border: none;
+    background-color: #3871ab;
     color: white;
+    border-radius: 10px;
 }
 
 #buttonAdd:hover {
     background-color: #5bbdf5;
 }
 
+#buttonAdd:hover {
+    background-color: #2d8ec2;
+}
 
+/* File list view */
 QListView {
-    background-color: #252525;
+    background-color: #252526;
     border: none;
     border-radius: 12px;
     padding: 6px;
 }
 
 QListView::item:selected {
-    background-color: #3a3a3a;
+    background-color: #3daee9;
+    color: white;
+}
+
+QListView::item:hover {
+    background-color: #2f2f2f;
     border-radius: 6px;
 }
 
+/* Tab bar */
 QTabBar {
     background: transparent;
 }
@@ -73,8 +85,23 @@ QTabBar::tab:hover {
 }
 
 QTabBar::tab:selected {
-    background: #202020;
+    background: #252526;
     color: white;
     border: 1px solid #3daee9;
-    border-bottom: none;
+}
+
+/* Scroll bar */
+
+QScrollBar:vertical {
+    background: #1e1e1e;
+    width: 10px;
+}
+
+QScrollBar::handle:vertical {
+    background: #3a3a3a;
+    border-radius: 5px;
+}
+
+QScrollBar::handle:vertical:hover {
+    background: #4a4a4a;
 }

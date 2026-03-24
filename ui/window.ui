@@ -27,7 +27,11 @@
       <item>
        <widget class="QPushButton" name="buttonAdd">
         <property name="text">
-         <string>➕ Add</string>
+         <string>Add</string>
+        </property>
+        <property name="icon">
+         <iconset resource="res.qrc">
+          <normaloff>:/UI/resources/add_action.ico</normaloff>:/UI/resources/add_action.ico</iconset>
         </property>
        </widget>
       </item>
@@ -36,12 +40,26 @@
         <property name="text">
          <string>Move</string>
         </property>
+        <property name="icon">
+         <iconset resource="res.qrc">
+          <normaloff>:/UI/resources/move_action.ico</normaloff>:/UI/resources/move_action.ico</iconset>
+        </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="buttonCopy">
         <property name="text">
          <string>Copy</string>
+        </property>
+        <property name="icon">
+         <iconset resource="res.qrc">
+          <normaloff>:/UI/resources/copy_action.ico</normaloff>:/UI/resources/copy_action.ico</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>20</width>
+          <height>20</height>
+         </size>
         </property>
        </widget>
       </item>
@@ -55,7 +73,7 @@
      <x>0</x>
      <y>0</y>
      <width>585</width>
-     <height>24</height>
+     <height>25</height>
     </rect>
    </property>
   </widget>
@@ -68,6 +86,8 @@
    <header>ui/FileListView.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="res.qrc"/>
+ </resources>
  <connections/>
 </ui>
