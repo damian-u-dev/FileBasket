@@ -5,6 +5,7 @@
 #include "../controller/FileBasketController.h"
 #include "FileItemDelegate.h"
 #include "CustomTabBar.h"
+#include "../services/UpdateCheckerService.h"
 
 #include <QVector>
 #include <QString>
@@ -15,6 +16,7 @@
 #include <QPropertyAnimation>
 #include <QInputDialog>
 #include <QMessageBox>
+#include <QDesktopServices>
 
 Window::Window(AppModel& model, FileBasketController& ctrl, QWidget *parent)
     : QMainWindow(parent)
@@ -27,6 +29,7 @@ Window::Window(AppModel& model, FileBasketController& ctrl, QWidget *parent)
     setupAnimations();
     setupEffects();
     setupConnections();
+    setupUpdater();
 }
 
 void Window::onAddClicked()
@@ -348,4 +351,17 @@ void Window::deleteTab(int index)
     {
         controller.deleteTab(index);
     }
+}
+
+void Window::setupUpdater()
+{
+    UpdateCheckerService* updater = new UpdateCheckerService(this);
+    connect(updater, &UpdateCheckerService::updateAvailable, this,
+            [=](QString version, QString url)
+        {
+            QMessageBox::information(this, "Update available",
+                QString("New version %1 is available!\n\nDownload?").arg(version));
+            QDesktopServices::openUrl(QUrl(url));
+        });
+    updater->checkForUpdates();
 }

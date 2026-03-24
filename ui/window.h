@@ -37,6 +37,7 @@ private:
     void setupAnimations();
     void setupEffects();
     void setupTabBar();
+    void setupUpdater();
     void setTitle();
 
     void buildTabs(const QStringList& names);
