@@ -36,6 +36,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         ui/FileItemDelegate.h ui/FileItemDelegate.cpp
         ui/CustomTabBar.h ui/CustomTabBar.cpp
         services/UpdateCheckerService.h services/UpdateCheckerService.cpp
+        services/LicenseService.h services/LicenseService.cpp
     )
 
   target_include_directories(FileBasket PRIVATE
