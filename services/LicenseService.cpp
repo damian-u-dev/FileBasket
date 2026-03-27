@@ -3,7 +3,7 @@
 #include <QSettings>
 #include <QCryptographicHash>
 
-static const QString key = "Lorem ipsum";
+static const QString builtKey = "Lorem ipsum";
 
 bool LicenseService::isPro()
 {
@@ -31,9 +31,9 @@ bool LicenseService::validateKey(const QString& key)
     QString user = parts[0];
     QString hash = parts[1];
 
-    QByteArray data = (user + key).toUtf8();
+    QByteArray data = (user + builtKey).toUtf8();
     QByteArray expectedHash =
         QCryptographicHash::hash(data, QCryptographicHash::Sha256).toHex();
 
-    return hash == expectedHash.left(10);
+    return hash == expectedHash;
 }

@@ -52,6 +52,9 @@ void initializeLogFile()
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    QCoreApplication::setOrganizationName("dev");
+    QCoreApplication::setApplicationName("FileBasket");
+
     initializeLogFile();
 
     AppModel model;

@@ -38,6 +38,8 @@ private:
     void setupEffects();
     void setupTabBar();
     void setupUpdater();
+    void setupMenuBar();
+
     void setTitle();
 
     void buildTabs(const QStringList& names);
@@ -45,6 +47,7 @@ private:
     void clearTabs();
     void renameTab(int index);
     void deleteTab(int index);
+    void enterActivationKey();
 
 signals:
     void requestAddFiles(const QStringList& paths);

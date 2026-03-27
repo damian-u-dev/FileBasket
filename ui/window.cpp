@@ -6,6 +6,7 @@
 #include "FileItemDelegate.h"
 #include "CustomTabBar.h"
 #include "../services/UpdateCheckerService.h"
+#include "../services/LicenseService.h"
 
 #include <QVector>
 #include <QString>
@@ -90,6 +91,7 @@ void Window::setupUi()
     setupListView();
     setupTabBar();
     updateStatusBar();
+    setupMenuBar();
 }
 
 void Window::setupListView()
@@ -364,4 +366,40 @@ void Window::setupUpdater()
             QDesktopServices::openUrl(QUrl(url));
         });
     updater->checkForUpdates();
+}
+
+void Window::setupMenuBar()
+{
+    ui->menuSettings->setIcon(QIcon(":/UI/resources/settings.ico"));
+    connect(ui->actionActivate, &QAction::triggered, this, &Window::enterActivationKey);
+}
+
+void Window::enterActivationKey()
+{
+    if(LicenseService::isPro())
+    {
+        QMessageBox::information(this, "Activation", "You're already activated!");
+        return;
+    }
+
+    bool ok;
+
+    const QString key = QInputDialog::getText(this,
+                          "Activation",
+                          "Please enter the key that was sent to your email.\nExample: Alex-XXXXXXXXXXX",
+                          QLineEdit::Normal,
+                          QString(),
+                          &ok);
+
+    if(!ok || key.isEmpty())
+        return;
+
+    if(LicenseService::activate(key))
+    {
+        QMessageBox::information(this, "Activation", "Congratulations. You're activated!");
+    }
+    else
+    {
+        QMessageBox::information(this, "Activation", "You're license key is not correct!");
+    }
 }
