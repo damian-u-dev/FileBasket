@@ -5,9 +5,6 @@
 #include <QIcon>
 #include <QFileIconProvider>
 
-//NOTE: If Windows returns a file icon by its extension
-//NOTE: but not by its content (for example, a .png image)
-//NOTE: the hash can be optimized to store icons by file extension, rather than the path of each file.
 QHash<QString, QIcon> iconCache;
 
 FileListModel::FileListModel(AppModel& model, QObject* parent)
@@ -57,13 +54,14 @@ QVariant FileListModel::data(const QModelIndex &index, int role) const
 
     if(role == Qt::DecorationRole)
     {
-        auto it = iconCache.find(item.path);
+        QString fileExtension = QFileInfo(item.path).suffix();
+        auto it = iconCache.find(fileExtension);
         if(it != iconCache.end())
             return it.value();
 
         static QFileIconProvider iconProvider;
         QIcon icon = iconProvider.icon(QFileInfo(item.path));
-        iconCache.insert(item.path, icon);
+        iconCache.insert(fileExtension, icon);
         return icon;
     }
 
