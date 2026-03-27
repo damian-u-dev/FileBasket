@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/UI">
-        <file>style.qss</file>
         <file>resources/add_action.ico</file>
         <file>resources/copy_action.ico</file>
         <file>resources/delete_tab.ico</file>
@@ -9,5 +8,7 @@
         <file>resources/remove_element.ico</file>
         <file>resources/rename_tab.ico</file>
         <file>resources/settings.ico</file>
+        <file>StyleDark.qss</file>
+        <file>StyleLight.qss</file>
     </qresource>
 </RCC>
