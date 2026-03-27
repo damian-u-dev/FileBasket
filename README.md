@@ -55,8 +55,6 @@ Managing files across different folders can be messy and inefficient.
 ## ⚡ Future Plans
 
 - 🔍 Search & filtering
-- 🔄 Auto-updates
-- 💎 Pro features
 - 📁 File system watcher
 
 ---
