@@ -285,8 +285,12 @@ void Window::clearTabs()
 
 void Window::setTitle()
 {
+    QString nameProgram = "FileBasket";
+    if(LicenseService::isPro())
+        nameProgram = "File Basket Pro";
+
     QString tab = model.getNameActiveTab();
-    setWindowTitle(QString("%1 - FileBasket").arg(tab));
+    setWindowTitle(QString("%1 - %2").arg(tab).arg(nameProgram));
 }
 
 void Window::onTabContextMenu(const QPoint& pos)
