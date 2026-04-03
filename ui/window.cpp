@@ -362,13 +362,17 @@ void Window::deleteTab(int index)
 void Window::setupUpdater()
 {
     UpdateCheckerService* updater = new UpdateCheckerService(this);
+
     connect(updater, &UpdateCheckerService::updateAvailable, this,
             [=](QString version, QString url)
         {
-            QMessageBox::information(this, "Update available",
+            auto res = QMessageBox::question(this, "Update available",
                 QString("New version %1 is available!\n\nDownload?").arg(version));
-            QDesktopServices::openUrl(QUrl(url));
+
+            if(res == QMessageBox::Yes)
+                QDesktopServices::openUrl(QUrl(url));
         });
+
     updater->checkForUpdates();
 }
 
