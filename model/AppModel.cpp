@@ -7,6 +7,9 @@
 AppModel::AppModel()
 {
     persistence.load(*this);
+    watcher = new QFileSystemWatcher(this);
+
+    connect(watcher, &QFileSystemWatcher::fileChanged, this, &AppModel::onFileChanged);
 }
 
 AppModel::~AppModel()
@@ -65,6 +68,9 @@ void AppModel::addFilesToActiveTab(const QStringList& paths)
         QString normalizedPath = info.absoluteFilePath();
         if(existingPaths.contains(normalizedPath))
             continue;
+
+        if(!watcher->files().contains(rawPath))
+            watcher->addPath(rawPath);
 
         FileItem item;
         item.path = normalizedPath;
@@ -235,6 +241,10 @@ const QVector<Tab>& AppModel::getTabs() const
 void AppModel::addFileToTab(const QString& tab, const QString& path, qint64 size)
 {
     int index = getTabIndexByName(tab);
+
+    if(!watcher->files().contains(path))
+        watcher->addPath(path);
+
     tabs[index].files.push_back({path, size});
 }
 
@@ -263,4 +273,48 @@ bool AppModel::deleteTab(int index)
 
     emit tabsChanged();
     return true;
+}
+
+void AppModel::onFileChanged(const QString& path)
+{
+    if(!QFile::exists(path))
+    {
+        removeFileByPath(path);
+        watcher->removePath(path);
+        return;
+    }
+
+    updateFileByPath(path);
+
+    if(!watcher->files().contains(path))
+        watcher->addPath(path);
+}
+
+void AppModel::removeFileByPath(const QString& path)
+{
+    auto& files = activeTab().files;
+    for(int i = 0; i < files.size(); i++)
+    {
+        if(files[i].path == path)
+        {
+            files.remove(i);
+            emit filesRemoved({i});
+            return;
+        }
+    }
+}
+
+void AppModel::updateFileByPath(const QString& path)
+{
+    auto& files = activeTab().files;
+    for(int i = 0; i < files.size(); i++)
+    {
+        if(files[i].path == path)
+        {
+            QFileInfo info(path);
+            files[i].size = info.size();
+            emit filesUpdated({i});
+            return;
+        }
+    }
 }

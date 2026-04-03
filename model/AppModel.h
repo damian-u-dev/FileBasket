@@ -6,6 +6,7 @@
 #include <QString>
 #include <QVector>
 #include <QObject>
+#include <QFileSystemWatcher>
 
 struct FileItem
 {
@@ -26,6 +27,7 @@ private:
     QVector<Tab> tabs;
     int currentTab = 0;
     PersistenceService persistence;
+    QFileSystemWatcher* watcher;
 
 public:
     AppModel();
@@ -49,6 +51,10 @@ public:
     bool renameTab(int index, const QString& newName);
     bool deleteTab(int index);
 
+private:
+    void removeFileByPath(const QString& path);
+    void updateFileByPath(const QString& path);
+
 signals:
     void filesAdded(int startIndex, int count);
     void filesRemoved(const QVector<int>& rows);
@@ -56,6 +62,9 @@ signals:
     void modelChanged();
     void activeTabChanged(int index);
     void tabsChanged();
+
+private slots:
+    void onFileChanged(const QString& path);
 };
 
 #endif // APPMODEL_H
