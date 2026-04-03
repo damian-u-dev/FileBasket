@@ -42,10 +42,6 @@ void Window::onAddClicked()
 
 void Window::onCopyClicked()
 {
-    QString dir = QFileDialog::getExistingDirectory(this, "Copy to");
-    if(dir.isEmpty())
-        return;
-
     QVector<int> selected;
     const QModelIndexList& rows = ui->listView->selectionModel()->selectedRows();
 
@@ -55,6 +51,13 @@ void Window::onCopyClicked()
     }
 
     if(selected.isEmpty())
+    {
+        QMessageBox::information(this, "Copy elements","Please, select elements");
+        return;
+    }
+
+    QString dir = QFileDialog::getExistingDirectory(this, "Copy to");
+    if(dir.isEmpty())
         return;
 
     emit requestCopy(dir, selected);
@@ -62,20 +65,23 @@ void Window::onCopyClicked()
 
 void Window::onMoveClicked()
 {
+    QVector<int> selected;
+    const QModelIndexList& rows = ui->listView->selectionModel()->selectedRows();
+
+    if(selected.isEmpty())
+    {
+        QMessageBox::information(this, "Move elements","Please, select elements");
+        return;
+    }
+
     QString dir = QFileDialog::getExistingDirectory(this, "Move to");
     if(dir.isEmpty())
         return;
-
-    QVector<int> selected;
-    const QModelIndexList& rows = ui->listView->selectionModel()->selectedRows();
 
     for(const QModelIndex& index : rows)
     {
         selected.append(index.row());
     }
-
-    if(selected.isEmpty())
-        return;
 
     emit requestMove(dir, selected);
 }
@@ -287,7 +293,7 @@ void Window::setTitle()
 {
     QString nameProgram = "FileBasket";
     if(LicenseService::isPro())
-        nameProgram = "File Basket Pro";
+        nameProgram = "FileBasket Pro";
 
     QString tab = model.getNameActiveTab();
     setWindowTitle(QString("%1 - %2").arg(tab).arg(nameProgram));
