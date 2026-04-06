@@ -5,7 +5,7 @@
 #include <QJsonObject>
 #include <QJsonArray>
 
-#define APP_VERSION "1.5"
+#define APP_VERSION "1.5.2"
 
 UpdateCheckerService::UpdateCheckerService(QObject *parent)
     : QObject{parent}

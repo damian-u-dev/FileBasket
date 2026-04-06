@@ -70,6 +70,11 @@ void Window::onMoveClicked()
     QVector<int> selected;
     const QModelIndexList& rows = ui->listView->selectionModel()->selectedRows();
 
+    for(const QModelIndex& index : rows)
+    {
+        selected.append(index.row());
+    }
+
     if(selected.isEmpty())
     {
         QMessageBox::information(this, "Move elements","Please, select elements");
@@ -79,11 +84,6 @@ void Window::onMoveClicked()
     QString dir = QFileDialog::getExistingDirectory(this, "Move to");
     if(dir.isEmpty())
         return;
-
-    for(const QModelIndex& index : rows)
-    {
-        selected.append(index.row());
-    }
 
     emit requestMove(dir, selected);
 }
