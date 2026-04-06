@@ -8,7 +8,9 @@
         <file>resources/remove_element.ico</file>
         <file>resources/rename_tab.ico</file>
         <file>resources/settings.ico</file>
-        <file>StyleDark.qss</file>
-        <file>StyleLight.qss</file>
+    </qresource>
+    <qresource prefix="/Themes">
+        <file>resources/Themes/Dark.qss</file>
+        <file>resources/Themes/Light.qss</file>
     </qresource>
 </RCC>

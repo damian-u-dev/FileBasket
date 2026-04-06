@@ -24,6 +24,8 @@ private:
     FileBasketController& controller;
     FileListModel* fileListModel = nullptr;
     CustomTabBar* tabBar;
+    QString currentTheme;
+    QStringList themes;
 
 public:
     Window(AppModel& model, FileBasketController& ctrl, QWidget *parent = nullptr);
@@ -39,7 +41,7 @@ private:
     void setupTabBar();
     void setupUpdater();
     void setupMenuBar();
-
+    void setupTheme();
     void setTitle();
 
     void buildTabs(const QStringList& names);
@@ -48,6 +50,8 @@ private:
     void renameTab(int index);
     void deleteTab(int index);
     void enterActivationKey();
+    void selectTheme();
+    void setTheme(const QString& nameTheme);
 
 signals:
     void requestAddFiles(const QStringList& paths);

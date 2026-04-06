@@ -82,12 +82,18 @@
      <string>Settings</string>
     </property>
     <addaction name="actionActivate"/>
+    <addaction name="actionSelect_theme"/>
    </widget>
    <addaction name="menuSettings"/>
   </widget>
   <action name="actionActivate">
    <property name="text">
     <string>Activate</string>
+   </property>
+  </action>
+  <action name="actionSelect_theme">
+   <property name="text">
+    <string>Select theme</string>
    </property>
   </action>
  </widget>

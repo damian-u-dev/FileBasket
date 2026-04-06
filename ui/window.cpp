@@ -18,6 +18,8 @@
 #include <QInputDialog>
 #include <QMessageBox>
 #include <QDesktopServices>
+#include <QSettings>
+#include <QDir>
 
 Window::Window(AppModel& model, FileBasketController& ctrl, QWidget *parent)
     : QMainWindow(parent)
@@ -98,6 +100,7 @@ void Window::setupUi()
     setupTabBar();
     updateStatusBar();
     setupMenuBar();
+    setupTheme();
 }
 
 void Window::setupListView()
@@ -142,6 +145,8 @@ void Window::setupConnections()
             &FileListView::filesDropped,
             &controller,
             &FileBasketController::handleDrop);
+
+    connect(ui->actionSelect_theme, &QAction::triggered, this, &Window::selectTheme);
 }
 
 void Window::setupAnimations()
@@ -416,4 +421,77 @@ void Window::enterActivationKey()
     {
         QMessageBox::information(this, "Activation", "You're license key is not correct!");
     }
+}
+
+void Window::selectTheme()
+{
+    //NOTE: Current theme is always first
+    QSettings settings("dev", "FileBasket");
+    QString currentTheme = settings.value("Theme").toString();
+
+    QStringList nameThemes;
+    nameThemes.push_back(currentTheme);
+
+    QDir dir(":/Themes/resources/Themes/");
+    QStringList fileThemes = dir.entryList();
+
+    if(fileThemes.isEmpty())
+        return;
+
+    for(const QString& fileTheme : std::as_const(fileThemes))
+    {
+        QFileInfo fInfo(fileTheme);
+        QString nameTheme = fInfo.baseName();
+        if(nameTheme != currentTheme)
+        {
+            nameThemes.push_back(nameTheme);
+        }
+    }
+
+    bool ok = false;
+    QString chosen = QInputDialog::getItem(
+        nullptr,
+        "Themes",
+        "Select theme",
+        nameThemes,
+        0,
+        false,
+        &ok);
+
+    if(!ok || chosen.isEmpty())
+        return;
+
+    if(chosen == currentTheme)
+        return;
+
+
+    auto iter = std::find(fileThemes.cbegin(), fileThemes.cend(), chosen + ".qss");
+    if(iter != fileThemes.cend())
+    {
+        setTheme(chosen);
+    }
+}
+
+void Window::setTheme(const QString& nameTheme)
+{
+    QString dirThemes = ":/Themes/resources/Themes/";
+    QString pathTheme = dirThemes + (nameTheme + ".qss");
+    QFile file(pathTheme);
+
+    if(file.open(QFile::ReadOnly | QFile::Text))
+    {
+        QTextStream stream(&file);
+        QString styleSheet = stream.readAll();
+        setStyleSheet(styleSheet);
+
+        QSettings settings("dev", "FileBasket");
+        settings.setValue("Theme", nameTheme);
+    }
+}
+
+void Window::setupTheme()
+{
+    QSettings settings("dev", "FileBasket");
+    QString lastUsedTheme = settings.value("Theme", "Light").toString();
+    setTheme(lastUsedTheme);
 }
