@@ -6,10 +6,9 @@
 
 AppModel::AppModel()
 {
-    persistence.load(*this);
     watcher = new QFileSystemWatcher(this);
-
     connect(watcher, &QFileSystemWatcher::fileChanged, this, &AppModel::onFileChanged);
+    persistence.load(*this);
 }
 
 AppModel::~AppModel()
