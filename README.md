@@ -52,13 +52,6 @@ Managing files across different folders can be messy and inefficient.
 
 ---
 
-## ⚡ Future Plans
-
-- 🔍 Search & filtering
-- 📁 File system watcher
-
----
-
 ## 📜 License
 
 MIT
