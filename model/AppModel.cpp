@@ -3,6 +3,7 @@
 #include <QSet>
 #include <QFileInfo>
 #include <QDir>
+#include <numeric>
 
 AppModel::AppModel()
 {
@@ -316,4 +317,17 @@ void AppModel::updateFileByPath(const QString& path)
             return;
         }
     }
+}
+
+void AppModel::clearActiveTab()
+{
+    const int SIZE = activeTab().files.size();
+    QVector<int> rows(SIZE);
+
+    std::iota(rows.begin(), rows.end(), 0);
+
+    activeTab().files.clear();
+
+    emit filesRemoved(rows);
+    emit modelChanged();
 }

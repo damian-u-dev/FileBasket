@@ -50,6 +50,7 @@ public:
     void addFileToTab(const QString& tab, const QString& path, qint64 size);
     bool renameTab(int index, const QString& newName);
     bool deleteTab(int index);
+    void clearActiveTab();
 
 private:
     void removeFileByPath(const QString& path);

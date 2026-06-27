@@ -92,7 +92,7 @@ void FileListModel::onFilesRemoved(const QVector<int>& rows)
     if(rows.isEmpty())
         return;
 
-    QVector<int> sorted;
+    QVector<int> sorted = rows;
     std::sort(sorted.begin(), sorted.end(), std::greater<>());
 
     for(int row : sorted)
