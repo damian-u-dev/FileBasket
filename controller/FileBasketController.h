@@ -13,7 +13,7 @@ public:
     FileBasketController(AppModel& model, QObject* parent = nullptr);
     void removeItems(const QVector<int>& indices);
     void moveItems(const QVector<int>& indices);
-    void createTab(const QString& name);
+    bool createTab(const QString& name);
     void renameTab(int index, const QString& newName);
     void deleteTab(int index);
 

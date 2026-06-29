@@ -41,6 +41,7 @@ public:
     int moveFilesFromActiveTab(QVector<int> rows, int indexAnotherTab);
     QStringList getTabNames() const;
     int getIndexActiveTab() const;
+    int getIndexLastTab() const;
     QString getTabName(int index) const;
     int getTabIndexByName(const QString& tabName);
     bool createTab(const QString& name);

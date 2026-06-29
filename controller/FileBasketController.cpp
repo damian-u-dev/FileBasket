@@ -152,14 +152,16 @@ void FileBasketController::moveItems(const QVector<int>& indices)
     }
 }
 
-void FileBasketController::createTab(const QString& name)
+bool FileBasketController::createTab(const QString& name)
 {
     if(!model.createTab(name))
     {
         QMessageBox::warning(nullptr,
                              "Error",
                              "Tab with this name already exists");
+        return false;
     }
+    return true;
 }
 
 void FileBasketController::renameTab(int index, const QString& newName)

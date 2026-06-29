@@ -273,7 +273,10 @@ void Window::createNewTab()
     if(!ok || name.trimmed().isEmpty())
         return;
 
-    controller.createTab(name);
+    if(controller.createTab(name))
+    {
+        onClickTab(model.getIndexLastTab());
+    }
 }
 
 void Window::rebuildTabs()

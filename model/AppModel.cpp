@@ -38,6 +38,7 @@ void AppModel::setActiveTab(int index)
     currentTab = index;
 
     emit activeTabChanged(index);
+    emit tabsChanged();
     emit modelChanged();
 }
 
@@ -330,4 +331,9 @@ void AppModel::clearActiveTab()
 
     emit filesRemoved(rows);
     emit modelChanged();
+}
+
+int AppModel::getIndexLastTab() const
+{
+    return getAmountTabs() - 1;
 }
