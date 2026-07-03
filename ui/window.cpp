@@ -247,7 +247,6 @@ void Window::setupTabBar()
 void Window::onClickTab(int index)
 {
     model.setActiveTab(index);
-    setTitle();
 }
 
 void Window::buildTabs(const QStringList& names)
@@ -303,7 +302,7 @@ void Window::setTitle()
         nameProgram = "FileBasket Pro";
 
     QString tab = model.getNameActiveTab();
-    setWindowTitle(QString("%1 - %2").arg(tab).arg(nameProgram));
+    setWindowTitle(QString("%1 - %2").arg(tab, nameProgram));
 }
 
 void Window::onTabContextMenu(const QPoint& pos)
