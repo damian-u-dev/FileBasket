@@ -56,6 +56,7 @@ public:
 private:
     void removeFileByPath(const QString& path);
     void updateFileByPath(const QString& path);
+    bool isNameTabUnique(const QString& newName);
 
 signals:
     void filesAdded(int startIndex, int count);

@@ -251,6 +251,14 @@ void AppModel::addFileToTab(const QString& tab, const QString& path, qint64 size
 
 bool AppModel::renameTab(int index, const QString& newName)
 {
+    QString oldName = getNameActiveTab();
+
+    if(oldName == newName)
+        return false;
+
+    if(!isNameTabUnique(newName))
+        return false;
+
     if(index < 0 || index >= tabs.size())
         return false;
 
@@ -348,4 +356,14 @@ void AppModel::clearActiveTab()
 int AppModel::getIndexLastTab() const
 {
     return getAmountTabs() - 1;
+}
+
+bool AppModel::isNameTabUnique(const QString& newName)
+{
+    for(const Tab& tab : std::as_const(tabs))
+    {
+        if(tab.name == newName)
+            return false;
+    }
+    return true;
 }

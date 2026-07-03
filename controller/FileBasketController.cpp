@@ -164,18 +164,14 @@ bool FileBasketController::createTab(const QString& name)
     return true;
 }
 
-void FileBasketController::renameTab(int index, const QString& newName)
+bool FileBasketController::renameTab(int index, const QString& newName)
 {
-    QString oldName = model.getTabName(index);
-    if(oldName == newName)
-        return;
-
-    model.renameTab(index, newName);
+    return model.renameTab(index, newName);
 }
 
-void FileBasketController::deleteTab(int index)
+bool FileBasketController::deleteTab(int index)
 {
-    model.deleteTab(index);
+    return model.deleteTab(index);
 }
 
 void FileBasketController::handleDrop(const QStringList& paths)
