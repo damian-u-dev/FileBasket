@@ -228,7 +228,7 @@ void Window::setupTabBar()
     ui->verticalLayout_3->insertLayout(0, tabLayout);
 
     connect(tabBar, &QTabBar::customContextMenuRequested, this, &Window::onTabContextMenu);
-    connect(tabBar, &QTabBar::tabBarClicked, this, &Window::onClickTab);
+    connect(tabBar, &CustomTabBar::switchTab, this, &Window::onClickTab);
     connect(addButton, &QPushButton::clicked, this, &Window::createNewTab);
 
     tabBar->setExpanding(false);
@@ -281,12 +281,11 @@ void Window::createNewTab()
 
 void Window::rebuildTabs()
 {
-    QSignalBlocker blocker(tabBar);
-
     clearTabs();
     buildTabs(model.getTabNames());
 
     tabBar->setCurrentIndex(model.getIndexActiveTab());
+    setTitle();
 }
 
 void Window::clearTabs()

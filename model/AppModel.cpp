@@ -263,14 +263,26 @@ bool AppModel::renameTab(int index, const QString& newName)
 bool AppModel::deleteTab(int index)
 {
     if(index < 0 || index >= tabs.size())
+    {
         return false;
-
-    if(index == currentTab)
+    }
+    else if(getAmountTabs() == 1)
+    {
+        clearActiveTab();
+        renameTab(index, "Default");
+        return true;
+    }
+    else if(index == currentTab)
     {
         setActiveTab(currentTab - 1);
+        tabs.removeAt(index);
     }
-
-    tabs.removeAt(index);
+    else if(index != currentTab)
+    {
+        QString name = getNameActiveTab();
+        tabs.removeAt(index);
+        setActiveTab(getTabIndexByName(name));
+    }
 
     emit tabsChanged();
     return true;

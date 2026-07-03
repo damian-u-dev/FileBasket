@@ -175,12 +175,6 @@ void FileBasketController::renameTab(int index, const QString& newName)
 
 void FileBasketController::deleteTab(int index)
 {
-    if(model.getAmountTabs() <= 1)
-    {
-        model.clearActiveTab();
-        model.renameTab(index, "Default");
-        return;
-    }
     model.deleteTab(index);
 }
 
