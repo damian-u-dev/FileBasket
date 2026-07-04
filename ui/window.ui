@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>585</width>
-    <height>748</height>
+    <width>380</width>
+    <height>520</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>380</width>
+    <height>520</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>FileBasket</string>
@@ -73,7 +79,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>585</width>
+     <width>380</width>
      <height>26</height>
     </rect>
    </property>
