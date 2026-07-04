@@ -147,6 +147,7 @@ void Window::setupConnections()
             &FileBasketController::handleDrop);
 
     connect(ui->actionSelect_theme, &QAction::triggered, this, &Window::selectTheme);
+    connect(ui->actionDelete_tabs, &QAction::triggered, this, &Window::deleteTabs);
 }
 
 void Window::setupAnimations()
@@ -495,4 +496,9 @@ void Window::setupTheme()
     QSettings settings("dev", "FileBasket");
     QString lastUsedTheme = settings.value("Theme", "Light").toString();
     setTheme(lastUsedTheme);
+}
+
+void Window::deleteTabs()
+{
+    controller.deleteTabs();
 }

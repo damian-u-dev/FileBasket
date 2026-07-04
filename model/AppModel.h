@@ -52,6 +52,7 @@ public:
     bool renameTab(int index, const QString& newName);
     bool deleteTab(int index);
     void clearActiveTab();
+    void deleteTabs();
 
 private:
     void removeFileByPath(const QString& path);

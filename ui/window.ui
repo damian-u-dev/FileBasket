@@ -74,7 +74,7 @@
      <x>0</x>
      <y>0</y>
      <width>585</width>
-     <height>25</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuSettings">
@@ -83,6 +83,7 @@
     </property>
     <addaction name="actionActivate"/>
     <addaction name="actionSelect_theme"/>
+    <addaction name="actionDelete_tabs"/>
    </widget>
    <addaction name="menuSettings"/>
   </widget>
@@ -94,6 +95,11 @@
   <action name="actionSelect_theme">
    <property name="text">
     <string>Select theme</string>
+   </property>
+  </action>
+  <action name="actionDelete_tabs">
+   <property name="text">
+    <string>Delete tabs</string>
    </property>
   </action>
  </widget>

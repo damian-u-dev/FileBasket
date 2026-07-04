@@ -250,3 +250,8 @@ QStringList FileBasketController::scanDirectory(const QString& path)
 
     return result;
 }
+
+void FileBasketController::deleteTabs()
+{
+    model.deleteTabs();
+}

@@ -367,3 +367,11 @@ bool AppModel::isNameTabUnique(const QString& newName)
     }
     return true;
 }
+
+void AppModel::deleteTabs()
+{
+    for(int i = getIndexLastTab(); i >= 0; i--)
+    {
+        deleteTab(i);
+    }
+}

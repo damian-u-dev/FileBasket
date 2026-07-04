@@ -49,6 +49,7 @@ private:
     void clearTabs();
     void renameTab(int index);
     void deleteTab(int index);
+    void deleteTabs();
     void enterActivationKey();
     void selectTheme();
     void setTheme(const QString& nameTheme);

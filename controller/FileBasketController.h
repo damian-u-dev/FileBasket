@@ -16,6 +16,7 @@ public:
     bool createTab(const QString& name);
     bool renameTab(int index, const QString& newName);
     bool deleteTab(int index);
+    void deleteTabs();
 
 public slots:
     void addFiles(const QStringList& paths);
