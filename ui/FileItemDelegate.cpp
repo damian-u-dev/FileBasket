@@ -3,6 +3,7 @@
 
 #include <QPainter>
 #include <QApplication>
+#include <QPixmap>
 
 FileItemDelegate::FileItemDelegate(QObject *parent)
     :QStyledItemDelegate(parent)
@@ -23,7 +24,7 @@ void FileItemDelegate::paint(QPainter* painter,
 
     painter->save();
 
-    QIcon icon     = index.data(Qt::DecorationRole).value<QIcon>();
+    QVariant decorationData = index.data(Qt::DecorationRole);
     QSize iconSize = opt.decorationSize;
 
     QRect iconRect = QRect(
@@ -33,7 +34,16 @@ void FileItemDelegate::paint(QPainter* painter,
     iconSize.height()
     );
 
-    icon.paint(painter, iconRect);
+    if(decorationData.canConvert<QPixmap>())
+    {
+        QPixmap icon = decorationData.value<QPixmap>();
+        painter->drawPixmap(iconRect, icon.scaled(iconSize, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    }
+    else if(decorationData.canConvert<QIcon>())
+    {
+        QIcon icon = decorationData.value<QIcon>();
+        icon.paint(painter, iconRect);
+    }
 
     int textLeft = iconRect.right() + 10;
 

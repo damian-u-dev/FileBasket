@@ -4,8 +4,10 @@
 #include <QHash>
 #include <QIcon>
 #include <QFileIconProvider>
+#include <QCache>
 
 QHash<QString, QIcon> iconCache;
+QCache<QString, QPixmap> thumbnailCache(300);
 
 FileListModel::FileListModel(AppModel& model, QObject* parent)
     : QAbstractListModel(parent)
@@ -32,10 +34,7 @@ QVariant FileListModel::data(const QModelIndex &index, int role) const
 
     const FileItem& item = files[index.row()];
 
-    if(role == Qt::DisplayRole)
-    {
-        return QFileInfo(item.path).fileName();
-    }
+    if(role == Qt::DisplayRole) return QFileInfo(item.path).fileName();
 
     if(role == FilePathRole)
     {
@@ -54,17 +53,36 @@ QVariant FileListModel::data(const QModelIndex &index, int role) const
 
     if(role == Qt::DecorationRole)
     {
-        QString fileExtension = QFileInfo(item.path).suffix();
-        auto it = iconCache.find(fileExtension);
-        if(it != iconCache.end())
-            return it.value();
+        QFileInfo fileInfo(item.path);
+        QString fileExtension = fileInfo.suffix().toLower();
 
-        static QFileIconProvider iconProvider;
-        QIcon icon = iconProvider.icon(QFileInfo(item.path));
-        iconCache.insert(fileExtension, icon);
-        return icon;
+        if(fileExtension == "png"   || fileExtension == "jpg" || fileExtension == "jpeg")
+        {
+            if(thumbnailCache.contains(item.path))
+            {
+                return *thumbnailCache.object(item.path);
+            }
+            else
+            {
+                QPixmap pixmap(item.path);
+                if(pixmap.isNull()) return {};
+
+                QPixmap thumbnail = pixmap.scaled(32, 32, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+                thumbnailCache.insert(item.path, new QPixmap(thumbnail));
+                return thumbnail;
+            }
+        }
+        else
+        {
+            auto it = iconCache.find(fileExtension);
+            if(it != iconCache.end()) return it.value();
+
+            static QFileIconProvider iconProvider;
+            QIcon icon = iconProvider.icon(QFileInfo(item.path));
+            iconCache.insert(fileExtension, icon);
+            return icon;
+        }
     }
-
     return {};
 }
 
