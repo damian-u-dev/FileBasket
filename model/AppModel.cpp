@@ -1,4 +1,5 @@
 #include "AppModel.h"
+#include "../Config.h"
 
 #include <QSet>
 #include <QFileInfo>
@@ -277,7 +278,7 @@ bool AppModel::deleteTab(int index)
     else if(getAmountTabs() == 1)
     {
         clearActiveTab();
-        renameTab(index, "Default");
+        renameTab(index, Config::DefaultTabName);
         return true;
     }
     else if(index == currentTab)

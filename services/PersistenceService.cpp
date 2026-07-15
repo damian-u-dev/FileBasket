@@ -1,5 +1,6 @@
 #include "PersistenceService.h"
 #include "../model/AppModel.h"
+#include "../Config.h"
 
 #include <QFile>
 #include <QDir>
@@ -67,13 +68,13 @@ void PersistenceService::load(AppModel& model)
 
     if(!file.exists())
     {
-        model.createTab("Default");
+        model.createTab(Config::DefaultTabName);
         return;
     }
 
     if(!file.open(QIODevice::ReadOnly))
     {
-        model.createTab("Default");
+        model.createTab(Config::DefaultTabName);
         return;
     }
 
@@ -86,13 +87,13 @@ void PersistenceService::load(AppModel& model)
 
     if(error.error != QJsonParseError::NoError)
     {
-        model.createTab("Default");
+        model.createTab(Config::DefaultTabName);
         return;
     }
 
     if(!doc.isObject())
     {
-        model.createTab("Default");
+        model.createTab(Config::DefaultTabName);
         return;
     }
 
@@ -101,7 +102,7 @@ void PersistenceService::load(AppModel& model)
 
     if(tabsArray.isEmpty())
     {
-        model.createTab("Default");
+        model.createTab(Config::DefaultTabName);
         return;
     }
 
