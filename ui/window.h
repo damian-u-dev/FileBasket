@@ -54,6 +54,9 @@ private:
     void selectTheme();
     void setTheme(const QString& nameTheme);
 
+    void saveGeometrySettings();
+    void setupGeometry();
+
 signals:
     void requestAddFiles(const QStringList& paths);
     void requestCopy(const QString& targetDir, const QVector<int>& selectedIndices);

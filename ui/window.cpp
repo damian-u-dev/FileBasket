@@ -90,6 +90,7 @@ void Window::onMoveClicked()
 
 Window::~Window()
 {
+    saveGeometrySettings();
     qInfo() <<"---Shutting down...---\n\n";
     delete ui;
 }
@@ -101,6 +102,7 @@ void Window::setupUi()
     updateStatusBar();
     setupMenuBar();
     setupTheme();
+    setupGeometry();
 }
 
 void Window::setupListView()
@@ -501,4 +503,19 @@ void Window::setupTheme()
 void Window::deleteTabs()
 {
     controller.deleteTabs();
+}
+
+void Window::saveGeometrySettings()
+{
+    QSettings settings("dev", "FileBasket");
+    settings.setValue("Geometry", saveGeometry());
+}
+
+void Window::setupGeometry()
+{
+    QSettings settings("dev", "FileBasket");
+    if(settings.contains("Geometry"))
+    {
+        restoreGeometry(settings.value("Geometry").toByteArray());
+    }
 }
