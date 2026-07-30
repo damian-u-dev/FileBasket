@@ -21,6 +21,22 @@ set(PROJECT_SOURCES
         ui/window.ui
 )
 
+# Get count of commits
+execute_process(
+    COMMAND git rev-list --count HEAD
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    OUTPUT_VARIABLE GIT_COMMIT_COUNT
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+    ERROR_QUIET
+)
+
+# If project is built outside repository
+if(NOT GIT_COMMIT_COUNT)
+    set(GIT_COMMIT_COUNT "0")
+endif()
+
+add_compile_definitions(APP_BUILD_NUMBER=${GIT_COMMIT_COUNT})
+
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(FileBasket
         MANUAL_FINALIZATION

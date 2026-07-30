@@ -5,7 +5,9 @@
 #include <QJsonObject>
 #include <QJsonArray>
 
-#define APP_VERSION "1.5.2"
+#ifndef APP_BUILD_NUMBER
+#define APP_BUILD_NUMBER 0
+#endif
 
 UpdateCheckerService::UpdateCheckerService(QObject *parent)
     : QObject{parent}
@@ -17,20 +19,29 @@ void UpdateCheckerService::checkForUpdates()
 {
     QUrl url("https://api.github.com/repos/damian-u-dev/FileBasket/releases/latest");
     QNetworkRequest request(url);
+
+    request.setHeader(QNetworkRequest::UserAgentHeader, "FileBasket");
+
     QNetworkReply* reply = manager->get(request);
 
     connect(reply, QNetworkReply::finished, this, [=]()
         {
             if(reply->error() != QNetworkReply::NoError)
+            {
+                reply->deleteLater();
                 return;
+            }
 
             QByteArray data = reply->readAll();
             QJsonDocument doc = QJsonDocument::fromJson(data);
             QJsonObject obj = doc.object();
 
-            QString latestVersion = obj["tag_name"].toString();
+            QString latestTag = obj["tag_name"].toString();
 
-            if(latestVersion > APP_VERSION)
+            latestTag.remove('v');
+            const int latestVersion = latestTag.toInt();
+
+            if(latestVersion > APP_BUILD_NUMBER)
             {
                 QJsonArray assets = obj["assets"].toArray();
                 if(!assets.isEmpty())
@@ -38,7 +49,7 @@ void UpdateCheckerService::checkForUpdates()
                     QString downloadUrl =
                         assets[0].toObject()["browser_download_url"].toString();
 
-                    emit updateAvailable(latestVersion, downloadUrl);
+                    emit updateAvailable(latestTag, downloadUrl);
                 }
             }
             else
