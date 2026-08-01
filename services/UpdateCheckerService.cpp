@@ -24,7 +24,7 @@ void UpdateCheckerService::checkForUpdates()
 
     QNetworkReply* reply = manager->get(request);
 
-    connect(reply, QNetworkReply::finished, this, [=]()
+    connect(reply, &QNetworkReply::finished, this, [=]()
         {
             if(reply->error() != QNetworkReply::NoError)
             {
