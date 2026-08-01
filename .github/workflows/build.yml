@@ -9,6 +9,9 @@ jobs:
   build:
     runs-on: windows-2022
 
+    permissions:
+      contents: write
+
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v4
@@ -51,8 +54,8 @@ jobs:
 
         Compress-Archive -Path release_pkg/* -DestinationPath "FileBasket-win64.zip"
 
-    - name: Create GitHub Release
-      uses: softprops/action-gh-release@v1
+    - name: Create Release
+      uses: softprops/action-gh-release@v2
       with:
         files: FileBasket-win64.zip
         tag_name: ${{ env.BUILD_NUMBER }}
