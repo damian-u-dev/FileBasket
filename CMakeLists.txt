@@ -30,6 +30,15 @@ execute_process(
     ERROR_QUIET
 )
 
+# Updating CMake for correct count of commits
+set(GIT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/.git")
+if(EXISTS "${GIT_DIR}/HEAD")
+    set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS "${GIT_DIR}/HEAD")
+    if(EXISTS "${GIT_DIR}/index")
+        set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS "${GIT_DIR}/index")
+    endif()
+endif()
+
 # If project is built outside repository
 if(NOT GIT_COMMIT_COUNT)
     set(GIT_COMMIT_COUNT "0")
