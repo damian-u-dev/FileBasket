@@ -100,15 +100,29 @@ void AppModel::removeFilesFromActiveTab(const QVector<int>& rows)
 
     auto& files = activeTab().files;
 
-    //Start from the end because
-    //The array elements will be
-    //Shifted by -1 after removing
+    //Note: Start from the end because
+    //Note: The array elements will be
+    //Note: Shifted by -1 after removing
     QVector<int> sorted = rows;
     std::sort(sorted.begin(), sorted.end(), std::greater<>());
 
+    QStringList removedPaths;
     for(int row : sorted)
+    {
         if(row >= 0 && row < files.size())
+        {
+            removedPaths.append(files[row].path);
             files.removeAt(row);
+        }
+    }
+
+    for(const auto& path : removedPaths)
+    {
+        if(!isPathUsedInAnyTab(path))
+        {
+            watcher->removePath(path);
+        }
+    }
 
     emit filesRemoved(rows);
     emit modelChanged();
@@ -301,15 +315,12 @@ void AppModel::onFileChanged(const QString& path)
 {
     if(!QFile::exists(path))
     {
-        removeFileByPath(path);
-        watcher->removePath(path);
-        return;
+        removePathGlobally(path);
     }
-
-    updateFileByPath(path);
-
-    if(!watcher->files().contains(path))
-        watcher->addPath(path);
+    else
+    {
+        updateFileByPath(path);
+    }
 }
 
 void AppModel::removeFileByPath(const QString& path)
@@ -321,8 +332,13 @@ void AppModel::removeFileByPath(const QString& path)
         {
             files.remove(i);
             emit filesRemoved({i});
-            return;
+            break;
         }
+    }
+
+    if(!isPathUsedInAnyTab(path))
+    {
+        watcher->removePath(path);
     }
 }
 
@@ -374,5 +390,50 @@ void AppModel::deleteTabs()
     for(int i = getIndexLastTab(); i >= 0; i--)
     {
         deleteTab(i);
+    }
+}
+
+bool AppModel::isPathUsedInAnyTab(const QString& path) const
+{
+    for (const Tab& tab : tabs)
+    {
+        for (const FileItem& item : tab.files)
+        {
+            if (item.path == path)
+                return true;
+        }
+    }
+    return false;
+}
+
+void AppModel::removePathGlobally(const QString& path)
+{
+    bool modified = false;
+
+    for (int t = 0; t < tabs.size(); t++)
+    {
+        auto& files = tabs[t].files;
+        for (int i = files.size() - 1; i >= 0; i--)
+        {
+            if (files[i].path == path)
+            {
+                files.remove(i);
+                modified = true;
+
+                if (t == currentTab)
+                {
+                    //NOTE: Updating FileList for current tab
+                    emit filesRemoved({i});
+                }
+                break;
+            }
+        }
+    }
+
+    //NOTE: Updating UI
+    if (modified)
+    {
+        watcher->removePath(path);
+        emit modelChanged();
     }
 }
