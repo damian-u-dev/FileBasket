@@ -125,7 +125,12 @@ void FileListModel::onFilesUpdated(const QVector<int>& rows)
     for(int row : rows)
     {
         QModelIndex index = createIndex(row, 0);
-        emit dataChanged(index, index);
+        if(index.isValid())
+        {
+            const QString path = data(index, FilePathRole).toString();
+            thumbnailCache.remove(path);
+            emit dataChanged(index, index, {Qt::DisplayRole, Qt::DecorationRole, FileSizeRole});
+        }
     }
 }
 
