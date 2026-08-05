@@ -1,4 +1,5 @@
 #include "FileListModel.h"
+#include "Config.h"
 
 #include <QFileInfo>
 #include <QHash>
@@ -56,7 +57,7 @@ QVariant FileListModel::data(const QModelIndex &index, int role) const
         QFileInfo fileInfo(item.path);
         QString fileExtension = fileInfo.suffix().toLower();
 
-        if(fileExtension == "png"   || fileExtension == "jpg" || fileExtension == "jpeg")
+        if(Config::supportsDynamicThumbnail(fileExtension))
         {
             if(thumbnailCache.contains(item.path))
             {
