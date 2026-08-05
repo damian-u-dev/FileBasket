@@ -129,8 +129,18 @@ void FileListModel::onFilesUpdated(const QVector<int>& rows)
         if(index.isValid())
         {
             const QString path = data(index, FilePathRole).toString();
-            thumbnailCache.remove(path);
-            emit dataChanged(index, index, {Qt::DisplayRole, Qt::DecorationRole, FileSizeRole});
+            const QFileInfo fileInfo(path);
+            const QString extension = fileInfo.suffix().toLower();
+            
+            QVector<int> roles = {Qt::DisplayRole, FileSizeRole};
+
+            if(Config::supportsDynamicThumbnail(extension))
+            {
+                thumbnailCache.remove(path);
+                roles.append(Qt::DecorationRole);
+            }
+
+            emit dataChanged(index, index, roles);
         }
     }
 }
