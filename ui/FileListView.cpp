@@ -27,6 +27,9 @@ void FileListView::contextMenuEvent(QContextMenuEvent* event)
 
     bool multiple = rows.size() > 1;
 
+    QAction* openFileAction = menu.addAction(
+        multiple ? "Open files" : "Open file");
+
     QAction* removeAction = menu.addAction(
         multiple ? "Remove elements" : "Remove element");
 
@@ -48,6 +51,10 @@ void FileListView::contextMenuEvent(QContextMenuEvent* event)
     else if(chosen == moveAction)
     {
         controller->moveItems(rows);
+    }
+    else if(chosen == openFileAction)
+    {
+        controller->openFiles(rows);
     }
 }
 

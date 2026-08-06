@@ -8,6 +8,7 @@
 #include <QFileInfo>
 #include <QDirIterator>
 #include <QPushButton>
+#include <QDesktopServices>
 
 FileBasketController::FileBasketController(AppModel& model, QObject* parent)
     : QObject(parent),
@@ -254,4 +255,16 @@ QStringList FileBasketController::scanDirectory(const QString& path)
 void FileBasketController::deleteTabs()
 {
     model.deleteTabs();
+}
+
+void FileBasketController::openFiles(const QVector<int>& indices)
+{
+    Tab& activeTab = model.activeTab();
+
+    for(int idx : indices)
+    {
+        const QString& path = activeTab.files[idx].path;
+        const QUrl fileUrl = QUrl::fromLocalFile(path);
+        QDesktopServices::openUrl(fileUrl);
+    }
 }
