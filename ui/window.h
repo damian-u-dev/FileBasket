@@ -71,6 +71,7 @@ private slots:
     void onClickTab(int index);
     void rebuildTabs();
     void onTabContextMenu(const QPoint& pos);
+    void openFile(const QModelIndex &index);
 
 private:
     Ui::Window *ui;

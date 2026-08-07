@@ -150,6 +150,7 @@ void Window::setupConnections()
 
     connect(ui->actionSelect_theme, &QAction::triggered, this, &Window::selectTheme);
     connect(ui->actionDelete_tabs, &QAction::triggered, this, &Window::deleteTabs);
+    connect(ui->listView, &FileListView::doubleClicked, this, &Window::openFile);
 }
 
 void Window::setupAnimations()
@@ -518,4 +519,9 @@ void Window::setupGeometry()
     {
         restoreGeometry(settings.value("Geometry").toByteArray());
     }
+}
+
+void Window::openFile(const QModelIndex &index)
+{
+    controller.openFiles({index.row()});
 }
