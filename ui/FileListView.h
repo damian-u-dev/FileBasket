@@ -5,6 +5,7 @@
 #include <QVector>
 
 class FileBasketController;
+class QKeyEvent;
 
 class FileListView : public QListView
 {
@@ -18,6 +19,7 @@ protected:
     void dragEnterEvent(QDragEnterEvent* event) override;
     void dragMoveEvent(QDragMoveEvent* event) override;
     void dropEvent(QDropEvent* event) override;
+    void keyPressEvent(QKeyEvent* event) override;
 
 private:
     FileBasketController* controller = nullptr;

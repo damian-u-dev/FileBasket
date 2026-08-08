@@ -4,6 +4,7 @@
 #include <QContextMenuEvent>
 #include <QMenu>
 #include <QMimeData>
+#include <QKeyEvent>
 
 FileListView::FileListView(QWidget* parent)
     : QListView(parent)
@@ -90,4 +91,17 @@ void FileListView::dropEvent(QDropEvent* event)
         paths.append(url.toLocalFile());
 
     emit filesDropped(paths);
+}
+
+void FileListView::keyPressEvent(QKeyEvent* event)
+{
+    if(event->key() == Qt::Key_Escape)
+    {
+        clearSelection();
+        event->accept();
+    }
+    else
+    {
+        QListView::keyPressEvent(event);
+    }
 }
