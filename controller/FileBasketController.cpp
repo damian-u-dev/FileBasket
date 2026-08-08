@@ -254,7 +254,13 @@ QStringList FileBasketController::scanDirectory(const QString& path)
 
 void FileBasketController::deleteTabs()
 {
-    model.deleteTabs();
+    QMessageBox::StandardButton answer = QMessageBox::question(nullptr,
+                                                               "Confirm removing",
+                                                               "All tabs will be removed.");
+    if(answer == QMessageBox::Yes)
+    {
+        model.deleteTabs();
+    }
 }
 
 void FileBasketController::openFiles(const QVector<int>& indices)
