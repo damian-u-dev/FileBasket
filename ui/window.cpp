@@ -7,6 +7,7 @@
 #include "CustomTabBar.h"
 #include "../services/UpdateCheckerService.h"
 #include "../services/LicenseService.h"
+#include "../services/FileOperationService.h"
 
 #include <QVector>
 #include <QString>
@@ -21,11 +22,13 @@
 #include <QSettings>
 #include <QDir>
 
-Window::Window(AppModel& model, FileBasketController& ctrl, QWidget *parent)
+Window::Window(AppModel& model, FileBasketController& ctrl,
+               FileOperationService& opera, QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::Window)
     , model(model)
     , controller(ctrl)
+    , operationService(opera)
 {
     ui->setupUi(this);
     setupUi();

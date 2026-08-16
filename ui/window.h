@@ -8,6 +8,7 @@
 
 class AppModel;
 class FileBasketController;
+class FileOperationService;
 class FileListModel;
 
 QT_BEGIN_NAMESPACE
@@ -22,13 +23,17 @@ private:
     Q_OBJECT
     AppModel& model;
     FileBasketController& controller;
+    FileOperationService& operationService;
     FileListModel* fileListModel = nullptr;
     CustomTabBar* tabBar;
     QString currentTheme;
     QStringList themes;
 
 public:
-    Window(AppModel& model, FileBasketController& ctrl, QWidget *parent = nullptr);
+    Window(AppModel& model,
+           FileBasketController& ctrl,
+           FileOperationService& opera,
+           QWidget *parent = nullptr);
     ~Window();
 
 

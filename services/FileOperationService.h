@@ -2,6 +2,7 @@
 #define FILEOPERATIONSERVICE_H
 
 #include <QStringList>
+#include <QObject>
 
 enum class OperationType
 {
@@ -9,10 +10,11 @@ enum class OperationType
     Move
 };
 
-class FileOperationService
+class FileOperationService : public QObject
 {
+    Q_OBJECT
 public:
-    static bool runExplorerOperation(
+    bool runExplorerOperation(
         const QStringList& paths,
         const QString& targetDir,
         OperationType type);

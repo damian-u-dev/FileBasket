@@ -2,6 +2,7 @@
 #include "model/AppModel.h"
 #include "controller/FileBasketController.h"
 #include "model/FileListModel.h"
+#include "services/FileOperationService.h"
 
 #include <QApplication>
 #include <QMutex>
@@ -58,10 +59,10 @@ int main(int argc, char *argv[])
     initializeLogFile();
 
     AppModel model;
-    FileBasketController controller(model);
-    //a.setTheme();
+    FileOperationService operationService;
+    FileBasketController controller(model, operationService);
 
-    Window w(model, controller);
+    Window w(model, controller, operationService);
 
     QObject::connect(&w, &Window::requestAddFiles, &controller, &FileBasketController::addFiles);
     QObject::connect(&w, &Window::requestCopy, &controller, &FileBasketController::copyTo);

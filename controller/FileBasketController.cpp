@@ -10,9 +10,12 @@
 #include <QPushButton>
 #include <QDesktopServices>
 
-FileBasketController::FileBasketController(AppModel& model, QObject* parent)
+FileBasketController::FileBasketController(AppModel& model,
+                                           FileOperationService& opera,
+                                           QObject* parent)
     : QObject(parent),
-      model(model)
+      model(model),
+    operationService(opera)
 { }
 
 void FileBasketController::addFiles(const QStringList& paths)
@@ -57,7 +60,7 @@ void FileBasketController::copyTo(const QString& targetDir, const QVector<int>& 
         if(index >= 0 && index < tab.files.size())
             paths << tab.files[index].path;
     }
-    FileOperationService::runExplorerOperation(paths, targetDir, OperationType::Copy);
+    operationService.runExplorerOperation(paths, targetDir, OperationType::Copy);
 }
 
 void FileBasketController::moveTo(const QString& targetDir, const QVector<int>& selectedIndices)
@@ -73,7 +76,7 @@ void FileBasketController::moveTo(const QString& targetDir, const QVector<int>& 
         if(index >= 0 && index < tab.files.size())
             paths << tab.files[index].path;
     }
-    bool success = FileOperationService::runExplorerOperation(paths, targetDir, OperationType::Move);
+    bool success = operationService.runExplorerOperation(paths, targetDir, OperationType::Move);
 
     if(!success)
         return;

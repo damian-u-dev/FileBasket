@@ -4,13 +4,15 @@
 #include <QObject>
 
 class AppModel;
+class FileOperationService;
 
 class FileBasketController : public QObject
 {
 private:
     AppModel& model;
+    FileOperationService& operationService;
 public:
-    FileBasketController(AppModel& model, QObject* parent = nullptr);
+    FileBasketController(AppModel& model, FileOperationService& opera, QObject* parent = nullptr);
     void removeItems(const QVector<int>& indices);
     void moveItems(const QVector<int>& indices);
     bool createTab(const QString& name);
