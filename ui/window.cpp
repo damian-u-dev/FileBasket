@@ -21,10 +21,12 @@
 #include <QDesktopServices>
 #include <QSettings>
 #include <QDir>
+#include <QCloseEvent>
 
-Window::Window(AppModel& model, FileBasketController& ctrl,
-               FileOperationService& opera, QWidget *parent)
-    : QMainWindow(parent)
+Window::Window(AppModel& model,
+    FileBasketController& ctrl,
+    FileOperationService& opera,
+    QWidget *parent) : QMainWindow(parent)
     , ui(new Ui::Window)
     , model(model)
     , controller(ctrl)
@@ -154,6 +156,8 @@ void Window::setupConnections()
     connect(ui->actionSelect_theme, &QAction::triggered, this, &Window::selectTheme);
     connect(ui->actionDelete_tabs, &QAction::triggered, this, &Window::deleteTabs);
     connect(ui->listView, &FileListView::doubleClicked, this, &Window::openFile);
+    connect(&operationService, &FileOperationService::operationStarted, this, &Window::onOperationStarted);
+    connect(&operationService, &FileOperationService::operationFinished, this, &Window::onOperationFinished);
 }
 
 void Window::setupAnimations()
@@ -326,6 +330,9 @@ void Window::onTabContextMenu(const QPoint& pos)
 
     QAction* deleteAction = menu.addAction("Delete Tab");
     deleteAction->setIcon(QIcon(":/UI/resources/delete_tab.ico"));
+
+    if(isOperationInProgress)
+        deleteAction->setEnabled(false);
 
     QAction* selected =
         menu.exec(tabBar->mapToGlobal(pos));
@@ -527,4 +534,32 @@ void Window::setupGeometry()
 void Window::openFile(const QModelIndex &index)
 {
     controller.openFiles({index.row()});
+}
+
+void Window::onOperationStarted()
+{
+    isOperationInProgress = true;
+    ui->buttonMove->setEnabled(false);
+    ui->actionDelete_tabs->setEnabled(false);
+    ui->listView->setContextMenuPolicy(Qt::NoContextMenu);
+}
+
+void Window::onOperationFinished()
+{
+    isOperationInProgress = false;
+    ui->buttonMove->setEnabled(true);
+    ui->actionDelete_tabs->setEnabled(true);
+    ui->listView->setContextMenuPolicy(Qt::DefaultContextMenu);
+}
+
+void Window::closeEvent(QCloseEvent *event)
+{
+    if(isOperationInProgress)
+    {
+        event->ignore();
+    }
+    else
+    {
+        event->accept();
+    }
 }

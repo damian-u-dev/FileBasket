@@ -33,6 +33,8 @@ bool FileOperationService::runExplorerOperation(
     if(paths.isEmpty() || targetDir.isEmpty())
         return false;
 
+    emit operationStarted();
+
     qInfo() << "Copying/Moving files...\n";
 
     //NOTE: Files will be copied and moved in one operation.
@@ -53,12 +55,14 @@ bool FileOperationService::runExplorerOperation(
     if(result != 0)
     {
         qWarning() << QStringLiteral("Copy/Move ended with error code: %1").arg(result);
+        emit operationFinished();
         return false;
     }
 
     if(op.fAnyOperationsAborted)
     {
         qInfo() << "Copy/Move aborted";
+        emit operationFinished();
         return false;
     }
 
@@ -69,5 +73,6 @@ bool FileOperationService::runExplorerOperation(
     qInfo() << QStringLiteral("Target directory: %1").arg(targetDir);
     qInfo() << QStringLiteral("Operation: %1").arg(operation);
 
+    emit operationFinished();
     return true;
 }

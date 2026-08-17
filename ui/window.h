@@ -8,8 +8,8 @@
 
 class AppModel;
 class FileBasketController;
-class FileOperationService;
 class FileListModel;
+class FileOperationService;
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -30,10 +30,11 @@ private:
     QStringList themes;
 
 public:
-    Window(AppModel& model,
-           FileBasketController& ctrl,
-           FileOperationService& opera,
-           QWidget *parent = nullptr);
+    Window(AppModel& model, 
+        FileBasketController& ctrl, 
+        FileOperationService& opera,
+        QWidget *parent = nullptr);
+    
     ~Window();
 
 
@@ -62,6 +63,9 @@ private:
     void saveGeometrySettings();
     void setupGeometry();
 
+protected:
+    void closeEvent(QCloseEvent *event) override;
+
 signals:
     void requestAddFiles(const QStringList& paths);
     void requestCopy(const QString& targetDir, const QVector<int>& selectedIndices);
@@ -77,8 +81,11 @@ private slots:
     void rebuildTabs();
     void onTabContextMenu(const QPoint& pos);
     void openFile(const QModelIndex &index);
+    void onOperationStarted();
+    void onOperationFinished();
 
 private:
     Ui::Window *ui;
+    bool isOperationInProgress = false;
 };
 #endif // WINDOW_H

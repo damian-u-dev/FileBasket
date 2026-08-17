@@ -18,6 +18,10 @@ public:
         const QStringList& paths,
         const QString& targetDir,
         OperationType type);
+
+signals:
+    void operationStarted();
+    void operationFinished();
 };
 
 #endif // FILEOPERATIONSERVICE_H
