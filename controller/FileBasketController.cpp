@@ -9,6 +9,8 @@
 #include <QDirIterator>
 #include <QPushButton>
 #include <QDesktopServices>
+#include <QtConcurrent/QtConcurrent>
+#include <QFutureWatcher>
 
 FileBasketController::FileBasketController(AppModel& model,
                                            FileOperationService& opera,
@@ -69,6 +71,7 @@ void FileBasketController::moveTo(const QString& targetDir, const QVector<int>& 
         return;
 
     const Tab& tab = model.activeTab();
+
     QStringList paths;
 
     for(int index : selectedIndices)
@@ -76,22 +79,37 @@ void FileBasketController::moveTo(const QString& targetDir, const QVector<int>& 
         if(index >= 0 && index < tab.files.size())
             paths << tab.files[index].path;
     }
-    bool success = operationService.runExplorerOperation(paths, targetDir, OperationType::Move);
 
-    if(!success)
+    if(paths.isEmpty())
         return;
 
-    QMessageBox::StandardButton answer = QMessageBox::question(nullptr,
-                    "Confirm removing",
-                    "All the files were successfully moved. Remove them from the current tab?");
-    if(answer == QMessageBox::Yes)
+    auto watcher = new QFutureWatcher<bool>(this);
+    connect(watcher, &QFutureWatcher<bool>::finished, this, [this, watcher, targetDir, selectedIndices]()
     {
-        model.removeFilesFromActiveTab(selectedIndices);
-    }
-    else
+        bool success = watcher->result();
+
+        if(!success)
+            return;
+
+        QMessageBox::StandardButton answer = QMessageBox::question(nullptr,
+                        "Confirm removing",
+                        "All the files were successfully moved. Remove them from the current tab?");
+        if(answer == QMessageBox::Yes)
+        {
+            model.removeFilesFromActiveTab(selectedIndices);
+        }
+        else
+        {
+            model.updatePaths(selectedIndices, targetDir);
+        }
+        watcher->deleteLater();
+    });
+
+    QFuture<bool> future = QtConcurrent::run([this, paths, targetDir]()
     {
-        model.updatePaths(selectedIndices, targetDir);
-    }
+        return operationService.runExplorerOperation(paths, targetDir, OperationType::Move);
+    });
+    watcher->setFuture(future);
 }
 
 void FileBasketController::setActiveTab(int index)
